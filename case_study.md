@@ -9,7 +9,15 @@ Data collected from:
 ## 0. Preprocess input data
 
 ### 0.1 Download genomes and gene annotation file and unzip all. 
-Prunus dulcis genome (refgenome) 
+The default scripts are written in a way so that all your genomes and other data are deposited under a parent directory named "Genus_genome". 
+In this tutorial, we are analyzing the Prunus genome so we are going to make a directory named "Prunus_genome". 
+```
+mkdir Prunus_genome
+cd Prunus_genome
+```
+Then we will download the following raw genome assembly into the directory we just created. 
+
+Prunus dulcis genome (refgenome): 
 ```
 wget https://www.rosaceae.org/rosaceae_downloads/Prunus_dulcis/pdulcis_v2.0/assembly/pdulcis26.chromosomes.fasta.gz
 wget https://www.rosaceae.org/rosaceae_downloads/Prunus_dulcis/pdulcis_v2.0/genes/Prudul26A.cds.fa.gz
@@ -22,7 +30,7 @@ mv pdulcis26.chromosomes.fasta refgenome.fa
 mv Prudul26A.cds.fa refgenome_cds.fa
 mv Prudul26A.chromosomes.gff3 refgenome.gff3
 ```
-Prunus armeniaca genome (qrygenome) 
+Prunus armeniaca genome (qrygenome): 
 ```
 wget https://www.rosaceae.org/rosaceae_downloads/Prunus_armeniaca/parmeniaca_cv.Stella_v1/assembly/Prunus_armeniaca_cv_Stella.fasta.gz
 gunzip Prunus_armeniaca_cv_Stella.fasta.gz
@@ -53,10 +61,43 @@ Convert gff3 into bed format
 module load bedops/2.4.39
 gff2bed < genome_cds.gff > genome_cds.bed
 ```
-
+To fit with the scripts, you'd need to 
 Now you have all the input data you need for the pipeline to run! 
 
 ## 1. Genome alignment and structural variant detection 
 
-### 1.1 Run minimap2 
-Genome alignment is performed by minimap2. It 
+The script to run this section in one step is found in 02_genome_alignment_SV_detection/run_syri_automation.sh. If you are to reproduce the whole pipeline, you would simply run: 
+```
+cd ..
+sbatch run_syri_automation.sh Prunus
+```
+which will submit the job script that is coded to run minimap2 and subsequent structural variant detection software (SyRI) in "Prunus_genome" directory. 
+
+When the job is done successfully, following outputs are produced in "Prunus_genome" folder: 
+```
+minimap2_ref_qrygenome_chr_alignment.sam
+syri.out
+syri.vcf
+syri.summary 
+invOut_table.txt 
+synOut_table.txt
+```
+"minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out", "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
+Additionally, for computing species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). Once we have "table_original.txt", 
+
+At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. Fortunately, SyRI provides this straightforward script to produce the figure: 
+```
+source /PATH/TO/python_env
+pip install matplotlib
+python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
+```
+The script produces "syri.pdf" figure in your curret directory which looks like this: 
+<img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
+and you can see interesting genomic structural variants present between apricot and almond genomes. Especially the large inversion in the end of chromosome 4 (Pd04) stands out to me. 
+This plot gives you a rough idea of how well the two genomes align at nucleotide sequence level. 
+
+
+Another common way of visualizing alignment result that does not depend on SyRI software is to simply plot on R. Using the 02_genome_alignment_SV_detection/visualize_genome_alignment.R code in R studio, you can straightaway visualize the minimap2 result (SAM file) 
+
+Genome alignment is performed by minimap2 to align qrygenome onto refgenome. It uses seed-chain-align procedure in which . 
+To run the program, you submit the job script 
