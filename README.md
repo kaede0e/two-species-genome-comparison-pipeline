@@ -40,6 +40,6 @@ Other dependencies (in Compute Canada clusters):
 - Singularity container https://docs.computecanada.ca/wiki/Singularity/en
 
 ## Run the pipeline
-0. Collect genomes (fasta) of two species (referred to as reference and query genome = ref and qry) and gene annotation file (gff3 or bed) for reference genome
+0. Collect genomes (fasta) of two species (referred to as reference and query genome = refgenome and qrygenome) and gene annotation file (gff3 or bed) for reference genome
 1. Pre-process genomes to remove scaffolds from genome assembly and convert gene annotation file into bed format containing only codingn sequence (CDS) - 01_preprocess_input{}
 2. 
