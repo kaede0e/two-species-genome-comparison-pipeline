@@ -18,7 +18,7 @@ cat refgenome.fa | grep ">CM" | cut -f 1 -d " " | sed s/">"//g > ref_chr_names.t
 ##column 1: name of chromosome
 ##column 2: start of chromosome
 ##column 3: end of chromosome    no header.
-#2.1) Cut only CDS rows 
+#2.1) Cut only CDS rows from the original gene annotation file
 awk '$3 ~ /CDS/' genome.gff > genome_cds.gff
-#2.2) Convert gff3 into bed
+#2.2) Convert gff3 into bed format
 gff2bed < genome_cds.gff > genome_cds.bed
