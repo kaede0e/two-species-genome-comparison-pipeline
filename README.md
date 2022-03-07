@@ -42,4 +42,5 @@ Other dependencies (in Compute Canada clusters):
 ## Run the pipeline
 0. Collect genomes (fasta) of two species (referred to as reference and query genome = refgenome and qrygenome) and gene annotation file (gff3 or bed) for reference genome
 1. **01_preprocess_input**: Pre-process genomes to remove scaffolds from genome assembly and convert gene annotation file into bed format containing only coding sequence (CDS)
-2. 
+2. **02_genome_alignment_SV_detection**: Aligns two refgenome and qrygenome by minimap2 and performs structural variant detection using SyRI. Then the outputs are visualized in R Studio. 
+3. 
