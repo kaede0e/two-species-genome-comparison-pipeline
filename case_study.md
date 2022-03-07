@@ -7,10 +7,7 @@ Data collected from:
 - Groppi A, Liu S, Cornille A, Decroocq S, Bui QT, Tricon D, Cruaud C, Arribat S, Belser C, Marande W, Salse J, Huneau C, Rodde N, Rhalloussi W, Cauet S, Istace B, Denis E, Carrère S, Audergon JM, Roch G, Lambert P, Zhebentyayeva T, Liu WS, Bouchez O, Lopez-Roques C, Serre RF, Debuchy R, Tran J, Wincker P, Chen X, Pétriacq P, Barre A, Nikolski M, Aury JM, Abbott AG, Giraud T, Decroocq V. Population genomics of apricots unravels domestication history and adaptive events.. Nature communications. 2021 06 25; 12(1):3956.
 
 ## 0. Preprocess input data
-The following uses bash script. 
-``` 
-#!/bin/bash
-```
+
 ### 0.1 Download genomes and gene annotation file and unzip all. 
 Prunus dulcis genome (refgenome) 
 ```
@@ -59,4 +56,7 @@ gff2bed < genome_cds.gff > genome_cds.bed
 
 Now you have all the input data you need for the pipeline to run! 
 
-## 1. 
+## 1. Genome alignment and structural variant detection 
+
+### 1.1 Run minimap2 
+Genome alignment is performed by minimap2. It 
