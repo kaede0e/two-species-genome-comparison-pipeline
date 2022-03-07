@@ -22,8 +22,6 @@ source /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/python_env/b
 PATH_TO_SYRI="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/syri"
 PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/plotsr"
 
-#*genome_pair="/home/kaedeh/scratch/paired_genome_for_syri/*_genome"
-#for genus in $genome_pair; do
   python3 $PATH_TO_SYRI \
 -c ${genus}_genome/minimap2_ref_qrygenome_chr_alignment.sam \
 -r ${genus}_genome/*refgenome_chr.fa \
@@ -31,14 +29,9 @@ PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syr
 --dir ${genus}_genome \
 -k -F S 2> ${genus}_genome/syri_error_out.txt ;
   cat ${genus}_genome/syri_error_out.txt | grep WARN  | grep "high fraction of inverted" | cut -f 23 -d " " | sed s/\(//g | sed s/\)\.//g > ${genus}_genome/chr_to_rev.txt  ;
-#if "${genus}_genome/chr_to_rev.txt =="//""
-#then
-#  cat ${genus}_genome/invOut.txt | perl /project/def-gowens/gowens/bin/syriout2table.pl > ${genus}_genome/invOut_table.txt
-#  cat ${genus}_genome/synOut.txt | perl /project/def-gowens/gowens/bin/syriout2table.pl > ${genus}_genome/synOut_table.txt
   echo "Done first $genus comparison" ;
   echo "Done first round of SyRI" ;
-#else
-#  echo "Done first $genus comparison" ;
+##when first round of SyRI fails, it's due to complementary sequences of chromosomes comapared. The following complements those problematic chromosomes identified in "chr_to_rev.txt". 
   rm -r ${genus}_genome/qrygenome_chr ;
   mkdir ${genus}_genome/qrygenome_chr ;
   cat ${genus}_genome/*qrychr_names.txt | grep -v -f ${genus}_genome/chr_to_rev.txt > ${genus}_genome/chr_to_keep.txt
@@ -54,11 +47,11 @@ PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syr
   done #reverse strand fasta for each chromosome
   cat ${genus}_genome/qrygenome_chr/* > ${genus}_genome/qrygenome_chr_rev.fa ;
   echo "Done first round of SyRI"
-  # Redo Whole Genome Alignment on reversed genome
-  minimap2 -t 10 -ax asm5 --eqx ${genus}_genome/*refgenome_chr.fa ${genus}_genome/qrygenome_chr_rev.fa > ${genus}_genome/minimap2_ref_qrygenome_chr_rev_alignment.sam
-  # Run SyRI round 2
-  #genome_pair="/home/kaedeh/scratch/paired_genome_for_syri/*_genome"
-  #for genus in $genome_pair; do
+  
+#3 Redo Whole Genome Alignment on reversed genome
+minimap2 -t 10 -ax asm5 --eqx ${genus}_genome/*refgenome_chr.fa ${genus}_genome/qrygenome_chr_rev.fa > ${genus}_genome/minimap2_ref_qrygenome_chr_rev_alignment.sam
+
+#4 Run SyRI round 2
     python3 $PATH_TO_SYRI \
   -c ${genus}_genome/minimap2_ref_qrygenome_chr_rev_alignment.sam \
   -r ${genus}_genome/*refgenome_chr.fa \
@@ -66,6 +59,5 @@ PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syr
   --dir ${genus}_genome \
   -k -F S 2> ${genus}_genome/syri_error2_out.txt
   echo "Done $genus second SyRI comparison" ;
-  #done
   echo "Done second round of SyRI"
-#fi
+
