@@ -60,4 +60,12 @@ minimap2 -t 10 -ax asm5 --eqx ${genus}_genome/*refgenome_chr.fa ${genus}_genome/
   -k -F S 2> ${genus}_genome/syri_error2_out.txt
   echo "Done $genus second SyRI comparison" ;
   echo "Done second round of SyRI"
-
+  
+ #5 Format SyRI output into tidy table
+cat invOut.txt | perl /PATH/TO/syriout2table.pl > invOut_table.txt
+cat synOut.txt | perl /PATH/TO/syriout2table.pl > synOut_table.txt
+cat TLOut.txt | perl /PATH/TO/syriout2table.pl > TLOut_table.txt
+cat invTLOut.txt | perl /PATH/TO/syriout2table.pl > invTLOut_table.txt
+cat invDupOut.txt | perl /PATH/TO/syriout2table.pl > invDupOut_table.txt
+cat dupOut.txt | perl /PATH/TO/syriout2table.pl > dupOut_table.txt
+ 
