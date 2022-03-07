@@ -25,7 +25,7 @@ Two-species genome comparison pipeline (combines minimap2/SyRI, EDTA, bedtools) 
 *Wall-clock time using 16 CPU, run by chromosome-by-chromosome. 
 
 ## General pipeline structure: 
-![Picture2](https://user-images.githubusercontent.com/91504464/156936597-57347eef-9546-4035-a372-af0bade3cc7b.png)
+![Picture1](https://user-images.githubusercontent.com/91504464/156959886-30dc48cc-4eba-41bd-8e9d-13a731b5e7d6.png)
 
 ## Dependencies/Installation
 The pipeline requires following software packages to run: 
