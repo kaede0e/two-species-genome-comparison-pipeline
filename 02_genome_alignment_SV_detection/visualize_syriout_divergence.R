@@ -30,7 +30,7 @@ inv_joined <- as_tibble(inversion_joined) #converting data frame into tibble
 syn_joined <- as_tibble(synteny_joined)
 "Genus1_table" <- full_join(syn_joined, inv_joined)
   
-##If you have done SyRI analysis on multiple genera, concatenate all tables in one master table: 
+##If you have done SyRI analysis on multiple genera, repeat above with different genus names and concatenate all tables in one master table: 
 Master_data_table <- rbind(Genus1_table, Genus2_table ... )
 
 Master_score_table <- Master_data_table %>%
