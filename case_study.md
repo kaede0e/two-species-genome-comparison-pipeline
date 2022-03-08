@@ -162,3 +162,10 @@ Then, length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90
 
 We do this calculation for every syn/inv region identified. Then we create a histogram of this score distribtion for syntenic region and inversion region using ggplot in R. The codes are found in 03_divergence_analysis/syriout_divergence_calc_plot.R and the output figures should look like these: 
 
+syn_plot 
+![Prunus_syn_plot](https://user-images.githubusercontent.com/91504464/157343849-21feb567-3232-4f2a-a0a5-b198fc77aaa5.png)
+
+inv_plot
+![Prunus_inv_plot2](https://user-images.githubusercontent.com/91504464/157343746-76a3c79f-1e2a-48a9-bf6a-34e85c213e9b.png)
+
+You should expect a normal distribution but some may appear skewed. Beware of the big difference in counts as there are much fewer inversions than syntenic regions between closely related species genomes. 
