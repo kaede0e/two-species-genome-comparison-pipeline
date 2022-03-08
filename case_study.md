@@ -157,7 +157,9 @@ For region A consisting of block a and b,
 where a = 10bp, 90% 
       b = 90bp, 70% 
 
-Then, length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90)
+Then, length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90) = 0.72
       length-normalized % identity for region x = {(length a x %a) + (length b x %b) + ...} / (length a + length b + ...) 
 ```
+
+We do this calculation for every syn/inv region identified. Then we create a histogram of this score distribtion for syntenic region and inversion region using ggplot in R. The codes are found in 03_divergence_analysis/syriout_divergence_calc_plot.R and the output figures should look like these: 
 
