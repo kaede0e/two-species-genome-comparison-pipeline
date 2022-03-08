@@ -6,9 +6,9 @@ Data collected from:
 - Alioto T, Alexiou KG, Bardil A, Barteri F, Castanera R, Cruz F, Dhingra A, Duval H, Fernández i Martí A, Frias L, Galán B, García JL, Howad W, Gómez‐Garrido J, Gut M, Julca I, Morata J, Puigdomènech P, Ribeca P, Rubio Cabetas MJ, Vlasova A, Wirthensohn M, Garcia‐Mas J, Gabaldón T, Casacuberta JM, Arús P. Transposons played a major role in the diversification between the closely related almond and peach genomes: results from the almond genome sequence. plant journal. 2020; 101(2):455-472.
 - Groppi A, Liu S, Cornille A, Decroocq S, Bui QT, Tricon D, Cruaud C, Arribat S, Belser C, Marande W, Salse J, Huneau C, Rodde N, Rhalloussi W, Cauet S, Istace B, Denis E, Carrère S, Audergon JM, Roch G, Lambert P, Zhebentyayeva T, Liu WS, Bouchez O, Lopez-Roques C, Serre RF, Debuchy R, Tran J, Wincker P, Chen X, Pétriacq P, Barre A, Nikolski M, Aury JM, Abbott AG, Giraud T, Decroocq V. Population genomics of apricots unravels domestication history and adaptive events.. Nature communications. 2021 06 25; 12(1):3956.
 
-## 0. Preprocess input data
+## 1. Preprocess input data
 
-### 0.1 Download genomes and gene annotation file and unzip all. 
+### 1.1 Download genomes and gene annotation file and unzip all. 
 The default scripts are written in a way so that all your genomes and other data are deposited under a parent directory named "Genus_genome". 
 In this tutorial, we are analyzing the Prunus genome so we are going to make a directory named "Prunus_genome". 
 ```
@@ -39,7 +39,7 @@ Rename to generalize scripts
 ```
 mv Prunus_armeniaca_cv_Stella.fasta qrygenome.fa
 ```
-### 0.2 Retain only chromosomes and remove the scaffolds in genome files. 
+### 1.2 Retain only chromosomes and remove the scaffolds in genome files. 
 We use samtools faidx tool to create an index file listing names of chromosomes and extract them from the raw assembly fasta file. 
 Depending on the chromosome names, fix the ">xxxx" name. 
 ```
@@ -49,7 +49,7 @@ samtools faidx refgenome.fa -r refgenome_chr_names.txt > refgenome_chr.fa
 cat qrygenome.fa | grep ">chr" | sed s/">"//g > qrygenome_chr_names.txt
 samtools faidx qrygenome.fa -r qrygenome_chr_names.txt > qrygenome_chr.fa
 ```
-### 0.3 Process gene annotation file. 
+### 1.3 Process gene annotation file. 
 The gff3 is the common format for gene annotation. Annotation file describes what feature of the genome is found in where in the genome. It generally contains many information including the locations of coding sequence (CDS), genes, exons, mRNA, etc. in the genome. However, our downstream analysis requires the use of bed formatted files (another way of describing locations of features) and we're only interested in CDS. The reason for choosing only CDS is that we want to look at regions that could make a significant phenotypic effect to the organism. CDS is where the sequences are actively translated to proteins, performing functional roles in an organism and it's where the nonsynonymous mutations arise that lead to evolutionary implications. 
 
 Extract CDS from gff3 (or any gff formatted gene annotation file)
@@ -63,7 +63,7 @@ gff2bed < genome_cds.gff > genome_cds.bed
 ```
 Now you have all the input data you need for the pipeline to run! 
 
-## 1. Genome alignment and structural variant detection 
+## 2. Genome alignment and structural variant detection 
 
 The script to run this section in one step is found in 02_genome_alignment_SV_detection/run_syri_automation.sh. If you are to reproduce the whole pipeline, you would simply run: 
 ```
@@ -121,13 +121,13 @@ and you can see interesting genomic structural variants present between apricot 
 
 ### Troubleshooting tips ###
 If you are stuck on somewhere in the pipline and doesn't proceed to completion, it is a good idea to see which step is causing the problem. Break-up scripts are uploaded for you to do this. 
-### 1.1 Genome alignment with minimap2
+### 2.1 Genome alignment with minimap2
 You can perform only the genome alignment step using minimap by submitting the following job: 
 ```
 sbatch run_minimap2.sh #change the input refgenome and qrygenome as needed. 
 ```
 This program is fairly computaitonally expensive, requiring lots of memory and CPU time to complete a complicated genome comparison. It may help if you run minimap2 separately from SyRI. 
-### 1.2 SyRI in two rounds 
+### 2.2 SyRI in two rounds 
 This may not be obvious from this example Prunus genomes but SyRI crashes and cannot finish the job if your chromosomes are not in the correct strand. DNA is double-stranded, and thus it has plus and minus strand. The program runs properly only if there is a sufficient amount of syntenic regions present between the two genomes. When one or more chromosomes of your query genome are somehow sequences of the opposite strands, then it fails to finish the job. This is why in some cases it requires you to run SyRI twice. 
 First with the non-complementary raw genome and then identify the problematic strands: 
 ```
@@ -140,5 +140,24 @@ sbatch run_syri_second_round_only.sh {your Genus name}
 There are occasionally cases where this does not solve the issue and requires you to manually determine which chromosome needs reverse-complementing. For instance, when a genome consists of many small inversions, this can mess up the program to determine the overall pattern of syntenic alignment. The solution to this issue is to visualize the SAM file as mentioned above, then update the "chr_to_rev.txt" file, and rerun second round of SyRI with the same command as above. 
 
 
-## 2. Species divergence analysis 
+## 3. Species divergence analysis 
+Now that we have the results of structural variants and the individual % identity scores from inversion and syntenic regions, we will calculate the divergence score between the two genomes of interest. 
+We define: 
+large blocks of inversion (inv) or syntenic region (syn) as inv region or syn region, respectively. 
+small blocks of inversion (inv) or syntenic region (syn) as inv block or syn block, respectively. 
+The formula to calculate the value termed "divergence score" is below: 
+- We know the score (= % identity) and length of individual syn/inv block 
+- We want to know the score of each syn/inv region
+
+```
+For region A consisting of block a and b, 
+ ---------   -------------------
+    a                  b
+|-------------------------------| region A 
+where a = 10bp, 90% 
+      b = 90bp, 70% 
+
+Then, length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90)
+      length-normalized % identity for region x = {(length a x %a) + (length b x %b) + ...} / (length a + length b + ...) 
+```
 
