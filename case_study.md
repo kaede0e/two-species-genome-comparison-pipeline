@@ -83,9 +83,15 @@ invOut_table.txt
 synOut_table.txt
 ```
 "minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out", "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
-Additionally, for computing species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). Once we have "table_original.txt", 
 
-At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. Fortunately, SyRI provides this straightforward script to produce the figure: 
+Additionally, for computing species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). 
+
+At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. Once we have "table_original.txt", we can plot the alignment using 02_genome_alignment_SV_detection/visualize_genome_alignment.R which creates the following figure in R: 
+![coords_file_for_visualization_original v0](https://user-images.githubusercontent.com/91504464/157148323-ef152261-3dc7-4be3-9236-dbd4bb84db3c.png)
+
+Each box is representative of the aligned chromosome from refgenome on x-axis, qrygenome on y-axis. When the two genome sequences match perfectly (syntenic), then the straight right-side-up diagonal line will appear. What it means is that the one location of the refgenome chromosome aligns with the same location on the qrygneome chromosome. Different colours represent the direction of the alignment (+ or - based on which way the sequence should be read). 
+
+For visualizing the structural variants identified by SyRI, fortunately, SyRI provides this straightforward script to produce the figure: 
 ```
 source /PATH/TO/python_env
 pip install matplotlib
