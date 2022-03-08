@@ -84,11 +84,19 @@ synOut_table.txt
 "minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out", "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
 
 Additionally, for computing species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). 
+```
+python3       #the three ">" appears which tells you that you're writing python command
+>>> from syri.pyxFiles.synsearchFunctions import samtocoords
+>>> table=samtocoords("/PATH/TO/minimap2_ref_qrygenome_chr_alignment.sam")
+>>> table.to_csv(r'table.txt', index = False, sep = '\t') #makes table.txt file in CSV format in my directory
+exit()
+```
 
-At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. Once we have "table_original.txt", we can plot the alignment using 02_genome_alignment_SV_detection/visualize_genome_alignment.R which creates the following figure in R: 
+At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. 
+
+Once we have "table.txt", we can plot the alignment using 02_genome_alignment_SV_detection/visualize_genome_alignment.R which creates the following figure in R: 
 ![coords_file_for_visualization_original v0](https://user-images.githubusercontent.com/91504464/157148323-ef152261-3dc7-4be3-9236-dbd4bb84db3c.png)
-
-Each box is representative of the aligned chromosome from refgenome on x-axis, qrygenome on y-axis. When the two genome sequences match perfectly (syntenic), then the straight right-side-up diagonal line will appear. What it means is that the one location of the refgenome chromosome aligns with the same location on the qrygneome chromosome. Different colours represent the direction of the alignment (+ or - based on which way the sequence should be read). 
+Each box is representative of the aligned chromosome from refgenome on x-axis and qrygenome on y-axis. When the two genome sequences match perfectly (syntenic), then the straight right-side-up diagonal line will appear. What it means is that the position of the reference chromosome aligns with the same position on the query chromosome. So when large structural variants such as inversions are found, the position on query chromosome slides by some sequences/position, and aligns to the reference chromosome in the opposite direction resulting in left-side-up diagonal. Different colours represent the direction of the alignment (+ in blue or - in black based on which way the alignd sequence was read). 
 
 For visualizing the structural variants identified by SyRI, fortunately, SyRI provides this straightforward script to produce the figure: 
 ```
@@ -96,13 +104,11 @@ source /PATH/TO/python_env
 pip install matplotlib
 python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
 ```
-The script produces "syri.pdf" figure in your curret directory which looks like this: 
+The script makes "syri.pdf" figure in your curret directory which looks like this: 
 <img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
 and you can see interesting genomic structural variants present between apricot and almond genomes. Especially the large inversion in the end of chromosome 4 (Pd04) stands out to me. 
-This plot gives you a rough idea of how well the two genomes align at nucleotide sequence level. 
+
+These two plots gives you a rough idea of how well the two genomes align and vary at nucleotide sequence level. 
 
 
-Another common way of visualizing alignment result that does not depend on SyRI software is to simply plot on R. Using the 02_genome_alignment_SV_detection/visualize_genome_alignment.R code in R studio, you can straightaway visualize the minimap2 result (SAM file) 
 
-Genome alignment is performed by minimap2 to align qrygenome onto refgenome. It uses seed-chain-align procedure in which . 
-To run the program, you submit the job script 
