@@ -61,7 +61,6 @@ Convert gff3 into bed format
 module load bedops/2.4.39
 gff2bed < genome_cds.gff > genome_cds.bed
 ```
-To fit with the scripts, you'd need to 
 Now you have all the input data you need for the pipeline to run! 
 
 ## 1. Genome alignment and structural variant detection 
