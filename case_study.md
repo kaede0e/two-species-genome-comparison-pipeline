@@ -83,7 +83,7 @@ synOut_table.txt
 ```
 "minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out", "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
 
-Additionally, for computing species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). 
+Additionally, to compute species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). 
 ```
 python3       #the three ">" appears which tells you that you're writing python command
 >>> from syri.pyxFiles.synsearchFunctions import samtocoords
@@ -91,7 +91,7 @@ python3       #the three ">" appears which tells you that you're writing python 
 >>> table.to_csv(r'table.txt', index = False, sep = '\t') #makes table.txt file in CSV format in current directory
 exit()
 ```
-So now, in addition to the previous outputs, you should have the following files in your working directory: 
+So now, you should have the following output files in your working directory: 
 ```
 minimap2_ref_qrygenome_chr_alignment.sam
 syri.out
@@ -117,15 +117,28 @@ python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
 The script makes "syri.pdf" figure in your curret directory which looks like this: 
 <img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
 
-and you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-chec that both figures are roughly matching in alignment. Especially the large inversion in the end of chromosome 4 (Pd04) stands out. 
+and you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-check that both figures are roughly matching in alignment. Here, especially the large inversion in the end of chromosome 4 (Pd04) stands out in both plots. 
 
 ### Troubleshooting tips ###
-If you are stuck on somewhere in the pipline and doesn't work to completion, it is a good idea to see which step is causing the problem and there are break-up scripts for you to do this. 
+If you are stuck on somewhere in the pipline and doesn't proceed to completion, it is a good idea to see which step is causing the problem. Break-up scripts are uploaded for you to do this. 
 ### 1.1 Genome alignment with minimap2
-Script found in: 02_genome_alignment_SV_detection/run_minimap2.sh
-This program is fairly computaitonally expensive, requiring memory and time to run for a complicated genome comparison. It may help if you run minimap2 separately from SyRI and once you get the alignment result, move onto the SyRI analysis. 
+You can perform only the genome alignment step using minimap by submitting the following job: 
+```
+sbatch run_minimap2.sh #change the input refgenome and qrygenome as needed. 
+```
+This program is fairly computaitonally expensive, requiring lots of memory and CPU time to complete a complicated genome comparison. It may help if you run minimap2 separately from SyRI. 
 ### 1.2 SyRI in two rounds 
-This may not be obvious from this example Prunus genomes. SyRI crashes and cannot finish the job if your chromosomes are not in the correct strand. DNA is double-stranded, and has plus and minus strand. The program runs properly only if there is a sufficient amount of syntenic regions present. When one or more chromosomes of your query genome are somehow sequences of the opposite strands, then it fails to finish the job. This is why in some cases it requires you to run SyRI two-rounds; first with the non-complementary raw genome and then fix the problematic strands and run again with complementary genome. 
+This may not be obvious from this example Prunus genomes but SyRI crashes and cannot finish the job if your chromosomes are not in the correct strand. DNA is double-stranded, and thus it has plus and minus strand. The program runs properly only if there is a sufficient amount of syntenic regions present between the two genomes. When one or more chromosomes of your query genome are somehow sequences of the opposite strands, then it fails to finish the job. This is why in some cases it requires you to run SyRI twice. 
+First with the non-complementary raw genome and then identify the problematic strands: 
+```
+sbatch run_syri_first_round_only.sh {your Genus name}
+```
+If SyRI fails, the text file called "chr_to_rev.txt" will have a list of chromosome names that need flipping. Using this information, you proceed with reverse-complementing chromosomes by samtools, then rerun SyRI. 
+```
+sbatch run_syri_second_round_only.sh {your Genus name}
+```
+There are occasionally cases where this does not solve the issue and requires you to manually determine which chromosome needs reverse-complementing. For instance, when a genome consists of many small inversions, this can mess up the program to determine the overall pattern of syntenic alignment. The solution to this issue is to visualize the SAM file as mentioned above, then update the "chr_to_rev.txt" file, and rerun second round of SyRI with the same command as above. 
 
 
-## 2. 
+## 2. Species divergence analysis 
+
