@@ -88,8 +88,18 @@ Additionally, for computing species divergence score more accurately, we need to
 python3       #the three ">" appears which tells you that you're writing python command
 >>> from syri.pyxFiles.synsearchFunctions import samtocoords
 >>> table=samtocoords("/PATH/TO/minimap2_ref_qrygenome_chr_alignment.sam")
->>> table.to_csv(r'table.txt', index = False, sep = '\t') #makes table.txt file in CSV format in my directory
+>>> table.to_csv(r'table.txt', index = False, sep = '\t') #makes table.txt file in CSV format in current directory
 exit()
+```
+So now, in addition to the previous outputs, you should have the following files in your working directory: 
+```
+minimap2_ref_qrygenome_chr_alignment.sam
+syri.out
+syri.vcf
+syri.summary 
+invOut_table.txt 
+synOut_table.txt
+table.txt
 ```
 
 At this point, it is useful to visually see what the alignment and structural variants look like between the two genomes you've compared. 
