@@ -16,7 +16,7 @@ Two-species genome comparison pipeline (combines minimap2/SyRI, EDTA, bedtools) 
 
 | Input genome (size)  | Step  | time required (hrs) | CPU memory (GB) |
 | :------------------- |:-----:| :------------------:| :-------------: |
-| 1 Prunus (202Mbp)    | minimap2 | 3               | 3              |
+| 1 Prunus (202Mbp)    | minimap2 | 5~               | 10~             |
 |                      | SyRI     | 1               | 3              |
 |                      | EDTA     | 36*             | 5.5            |
 | 2 Arachis (1.01Gbp)  | minimap2+SyRI|    8.7      | 72             |
