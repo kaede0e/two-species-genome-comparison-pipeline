@@ -6,7 +6,7 @@ Data collected from:
 - Alioto T, Alexiou KG, Bardil A, Barteri F, Castanera R, Cruz F, Dhingra A, Duval H, Fernández i Martí A, Frias L, Galán B, García JL, Howad W, Gómez‐Garrido J, Gut M, Julca I, Morata J, Puigdomènech P, Ribeca P, Rubio Cabetas MJ, Vlasova A, Wirthensohn M, Garcia‐Mas J, Gabaldón T, Casacuberta JM, Arús P. Transposons played a major role in the diversification between the closely related almond and peach genomes: results from the almond genome sequence. plant journal. 2020; 101(2):455-472.
 - Groppi A, Liu S, Cornille A, Decroocq S, Bui QT, Tricon D, Cruaud C, Arribat S, Belser C, Marande W, Salse J, Huneau C, Rodde N, Rhalloussi W, Cauet S, Istace B, Denis E, Carrère S, Audergon JM, Roch G, Lambert P, Zhebentyayeva T, Liu WS, Bouchez O, Lopez-Roques C, Serre RF, Debuchy R, Tran J, Wincker P, Chen X, Pétriacq P, Barre A, Nikolski M, Aury JM, Abbott AG, Giraud T, Decroocq V. Population genomics of apricots unravels domestication history and adaptive events.. Nature communications. 2021 06 25; 12(1):3956.
 
-## 0. Download genomes and gene annotation file and unzip all. 
+## 0. Download genomes and gene annotation file and unzip all
 The default scripts are written in a way so that all your genomes and other data are deposited under a parent directory named "Genus_genome". 
 In this tutorial, we are analyzing the Prunus genome so we are going to make a directory named "Prunus_genome". 
 ```
@@ -38,7 +38,7 @@ Rename to generalize scripts
 mv Prunus_armeniaca_cv_Stella.fasta qrygenome.fa
 ```
 ## 1. Preprocess input data
-### 1.1 Retain only chromosomes and remove the scaffolds in genome files. 
+### 1.1 Retain only chromosomes and remove the scaffolds in genome files
 We use samtools faidx tool to create an index file listing names of chromosomes and extract them from the raw assembly fasta file. 
 Depending on the chromosome names, fix the ">xxxx" name. 
 ```
@@ -48,7 +48,7 @@ samtools faidx refgenome.fa -r refgenome_chr_names.txt > refgenome_chr.fa
 cat qrygenome.fa | grep ">chr" | sed s/">"//g > qrygenome_chr_names.txt
 samtools faidx qrygenome.fa -r qrygenome_chr_names.txt > qrygenome_chr.fa
 ```
-### 1.2 Process gene annotation file. 
+### 1.2 Process gene annotation file
 The gff3 is the common format for gene annotation. Annotation file describes what feature of the genome is found in where in the genome. It generally contains many information including the locations of coding sequence (CDS), genes, exons, mRNA, etc. in the genome. However, our downstream analysis requires the use of bed formatted files (another way of describing locations of features) and we're only interested in CDS. The reason for choosing only CDS is that we want to look at regions that could make a significant phenotypic effect to the organism. CDS is where the sequences are actively translated to proteins, performing functional roles in an organism and it's where the nonsynonymous mutations arise that lead to evolutionary implications. 
 
 Extract CDS from gff3 (or any gff formatted gene annotation file)
