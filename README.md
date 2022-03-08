@@ -12,7 +12,7 @@ Two-species genome comparison pipeline (combines minimap2/SyRI, EDTA, bedtools) 
 ### Limitation of this pipeline
 -	relies on the quality of genome you have. Only chromosome-resolved genomes can be used as the input. 
 -	The two species of interest must contain sufficient genomic region that is syntenic 
--	requires appropriate amount of computational resource as shown: 
+-	certain steps require appropriate amount of computational resource as shown: 
 
 | Input genome (size)  | Step  | time required (hrs) | CPU memory (GB) |
 | :------------------- |:-----:| :------------------:| :-------------: |
