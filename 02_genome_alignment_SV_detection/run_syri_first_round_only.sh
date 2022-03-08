@@ -24,4 +24,5 @@ python3 $PATH_TO_SYRI \
 -q ${genus}_genome/qrygenome_chr_rev.fa \
 --dir ${genus}_genome \
 -k -F S 2> ${genus}_genome/syri_error_out.txt;
+cat ${genus}_genome/syri_error_out.txt | grep WARN  | grep "high fraction of inverted" | cut -f 23 -d " " | sed s/\(//g | sed s/\)\.//g > ${genus}_genome/chr_to_rev.txt ;
 echo "Done $genus first SyRI comparison"
