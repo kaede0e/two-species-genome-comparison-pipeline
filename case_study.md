@@ -116,9 +116,16 @@ python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
 ```
 The script makes "syri.pdf" figure in your curret directory which looks like this: 
 <img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
-and you can see interesting genomic structural variants present between apricot and almond genomes. Especially the large inversion in the end of chromosome 4 (Pd04) stands out to me. 
 
-These two plots gives you a rough idea of how well the two genomes align and vary at nucleotide sequence level. 
+and you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-chec that both figures are roughly matching in alignment. Especially the large inversion in the end of chromosome 4 (Pd04) stands out. 
+
+### Troubleshooting tips ### 
+If you are stuck on somewhere in the pipline and doesn't work to completion, it is a good idea to see which step is causing the problem and there are break-up scripts for you to do this. 
+## 1.1 Genome alignment with minimap2
+Script found in: 02_genome_alignment_SV_detection/run_minimap2.sh
+This program is fairly computaitonally expensive, requiring memory and time to run for a complicated genome comparison. It may help if you run minimap2 separately from SyRI and once you get the alignment result, move onto the SyRI analysis. 
+## 1.2 SyRI in two rounds 
+This may not be obvious from this example Prunus genomes. SyRI crashes and cannot finish the job if your chromosomes are not in the correct strand. DNA is double-stranded, and has plus and minus strand. The program runs properly only if there is a sufficient amount of syntenic regions present. When one or more chromosomes of your query genome are somehow sequences of the opposite strands, then it fails to finish the job. This is why in some cases it requires you to run SyRI two-rounds; first with the non-complementary raw genome and then fix the problematic strands and run again with complementary genome. 
 
 
-
+## 2. 
