@@ -119,7 +119,7 @@ The script makes "syri.pdf" figure in your curret directory which looks like thi
 
 and you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-chec that both figures are roughly matching in alignment. Especially the large inversion in the end of chromosome 4 (Pd04) stands out. 
 
-#### Troubleshooting tips ####
+### Troubleshooting tips ###
 If you are stuck on somewhere in the pipline and doesn't work to completion, it is a good idea to see which step is causing the problem and there are break-up scripts for you to do this. 
 ### 1.1 Genome alignment with minimap2
 Script found in: 02_genome_alignment_SV_detection/run_minimap2.sh
