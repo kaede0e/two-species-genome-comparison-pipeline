@@ -144,11 +144,12 @@ Now that we have the results of structural variants and the individual % identit
 We define: 
 large blocks of inversion (inv) or syntenic region (syn) as inv region or syn region, respectively. 
 small blocks of inversion (inv) or syntenic region (syn) as inv block or syn block, respectively. 
-The formula to calculate the value termed "divergence score" is below: 
+The formula to calculate the value termed "region_percent_identity" is below: 
+
+```
 - We know the score (= % identity) and length of individual syn/inv block 
 - We want to know the score of each syn/inv region
 
-```
 For region A consisting of block a and b, 
  ---------   -------------------
     a                  b
@@ -156,8 +157,8 @@ For region A consisting of block a and b,
 where a = 10bp, 90% 
       b = 90bp, 70% 
 
-Then, length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90) = 0.72
-      length-normalized % identity for region x = {(length a x %a) + (length b x %b) + ...} / (length a + length b + ...) 
+Then, region A_percent_identity = length-normalized % identity for region A = {(10x0.9) + (90x0.7)} / (10+90) = 0.72
+      region_percent_identity = length-normalized % identity for region x = {(length a x %a) + (length b x %b) + ...} / (length a + length b + ...) 
 ```
 
 We do this calculation for every syn/inv region identified. Then we create a histogram of this score distribtion for syntenic region and inversion region using ggplot in R. The codes are found in 03_divergence_analysis/syriout_divergence_calc_plot.R and the output figures should look like these: 
