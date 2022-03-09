@@ -186,5 +186,6 @@ The next few sections are driven by some hypotheses around genomic inversions an
 3. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect more TEs in inversions than syntenic regions. 
 4. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect enriched presence of TEs in inversion breakpoints compared to the rest of the genome. 
 
-
+To test the above hypotheses, first, we need to obtain TE library for the refgenome. 
+We will use the extensive de novo TE annotator (EDTA) pipeline which works by making educational guesses on sequences that have structural characteristics that define TE classes and superfamilies. The advantages of de novo method include: it does not rely on high copy number, does not rely on sequence homology from reference (model organism) genome sequences, prior knowledge, or databases. 
 
