@@ -39,8 +39,9 @@ Other dependencies (in Compute Canada clusters):
 - Singularity container https://docs.computecanada.ca/wiki/Singularity/en
 
 ## Run the pipeline
-0. Collect genomes (fasta) of two species (referred to as reference and query genome = refgenome and qrygenome) and gene annotation file (gff3 or bed) for reference genome
+0. Collect genomes (fasta) of two species (referred to as reference genome = refgenome, and query genome = qrygenome) and gene annotation file (gff3 or bed) for reference genome
 1. **01_preprocess_input**: Pre-process genomes to remove scaffolds from genome assembly and convert gene annotation file into bed format containing only coding sequence (CDS)
 2. **02_genome_alignment_SV_detection**: Align refgenome with qrygenome by minimap2 and performs structural variant detection using SyRI. Visualize in R Studio and infer divergence score based on sequence identity
 3. **03_divergence_analysis**: Calculate species divergence score and vsualize syntenic region and inversion stats. 
-4. 
+4. **04_de_novo_TE_annotation**: Identify and annotate the input genome with transposable elements de novo. 
+5. **05_CDS_TE_overlap_analysis**: 
