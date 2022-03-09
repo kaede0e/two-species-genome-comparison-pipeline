@@ -187,5 +187,18 @@ The next few sections are driven by some hypotheses around genomic inversions an
 4. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect enriched presence of TEs in inversion breakpoints compared to the rest of the genome. 
 
 To test the above hypotheses, first, we need to obtain TE library for the refgenome. 
-We will use the extensive de novo TE annotator (EDTA) pipeline which works by making educational guesses on sequences that have structural characteristics that define TE classes and superfamilies. The advantages of de novo method include: it does not rely on high copy number, does not rely on sequence homology from reference (model organism) genome sequences, prior knowledge, or databases. 
+We will use the extensive de novo TE annotator (EDTA) pipeline which works by making educational guesses on sequences that have structural characteristics that define TE classes and superfamilies. The advantages of de novo method include: it does not rely on high copy number assumption, does not rely on sequence homology from reference (model organism) genome sequences, prior knowledge, or databases. 
+
+The program EDTA depends on many third-party software packages as it is a pipeline that combines multiple separate TE finders (LTR-FINDER, LTRharvest, generic repeat finder, HelitronScanner, etc. - refer to their Github page for details) and then filters them for redundancy, and additionally perform de novo TE annotator (RepeatModeler) to produce the curated nonredundant TE library. As a result, the pipeline comes in a package that contains everything you need which use you can download and access via either Conda or Singularity. 
+Here, we will use Singularity module to run the pipeline. 
+```
+singularity shell -B /home -B /PATH/TO/bin/EDTA/EDTA-2.0.0.sif \
+perl /PATH/TO/bin/EDTA/EDTA.pl \
+--genome refgenome_chr.fa \
+--cds genome_cds.fasta \
+--exclude genome_cds.bed \
+--overwrite 1 --sensitive 1 --anno 1 --threads ${SLURM_CPUS_PER_TASK}
+```
+This command starts an interactive job that goes all the steps in EDTA pipeline and runs until completion. However, as it is a resource-heavy program and could run for days and weeks depending on the size of your genome, it may be more feasible to use scripts like 04_de_novo_TE_annotation/example_run_EDTA_by_chr.sh which divides the genome into chromosomes and performs EDTA pipeline separately. The limitation for doing this is the potential missing hits for TEs as it cannot look for TEs found across multiple chromosomes. But for our purposes, this is acceptable. 
+
 
