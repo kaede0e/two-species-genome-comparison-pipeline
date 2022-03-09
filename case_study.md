@@ -163,12 +163,19 @@ Then, region A_percent_identity = length-normalized % identity for region A = {(
 
 We do this calculation for every syn/inv region identified. Then we create a histogram of this score distribtion for syntenic region and inversion region using ggplot in R. The codes are found in 03_divergence_analysis/syriout_divergence_calc_plot.R and the output figures should look like these: 
 
-syn_plot 
+_syn_plot _
 ![Prunus_syn_plot](https://user-images.githubusercontent.com/91504464/157343849-21feb567-3232-4f2a-a0a5-b198fc77aaa5.png)
 
 You should expect a normal distribution but some may appear skewed. The vertical line on syn_plot is the mean of the length-normalized region % identity for this dataset corresponding to species divergence score (100% = 100% identical region in sequence, same species/genomes). Because random mutations occur and fix over time in the evolutionary timescale, the less % identity in sequence indicates the more divergent species relationship. Thus, we can interpret the x-axis as genomic divergence between the two species. 
 
-inv_plot
+_inv_plot_
 ![Prunus_inv_plot2](https://user-images.githubusercontent.com/91504464/157343746-76a3c79f-1e2a-48a9-bf6a-34e85c213e9b.png)
+
 For inversions, the idea of sequence identity is similar to how we would interpret the syn_plot. Although inversions do reduce recombination rate within the region compared to other parts of the genome, they can still undergo mutations over time. As a result, the lower % identity or the smaller value in x-axis on this plot indicate the presence of potentially old, ancient inversions occurred in the ancestor of the two species. 
-!Beware of the big difference in counts as there are much fewer inversions than syntenic regions between closely related species genomes. 
+
+
+Taking these results, you can plan a further investigation into certain structural variants detected, or maybe do a BLAST search on what genes may be found in these regions that might have an evolutionary significance. 
+Beware of the big difference in counts as there are much fewer inversions than syntenic regions between closely related species genomes. Don't overinterpret things based on the instant appearances. 
+
+## 4. _de novo_ TE annotation pipeline 
+The next few sections are driven by the hypotheses around genomic inversions and their rates of occurrence. 
