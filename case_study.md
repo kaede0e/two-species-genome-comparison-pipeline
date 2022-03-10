@@ -231,5 +231,11 @@ bedtools_bpoverlap_merged_TE_syn.txt
 ```
 Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big region of features. This conveys more accurate information we're looking for (how much proportion of inv/syn region contains CDS/TE). 
 
-The last part of the pipeline shows some more deeper statistical analyses you can do on the data the pipeline has created so far. 
+The count files give you how many CDS/TE are found within the syn/inv regions on the last column. 
+The bpoverlap files give you how many basepairs of CDS/TE are found to overlap with syn/inv regions on the last column. 
+
+Using these data, we can visualize and do deeper statistical analyses about inversion vs syntenic region with respect to CDS and TE content. 
+
+### some ideas for further analysis in R 
+One thing you could easily pull out from the data produced by bedtools is comparing the number of CDS/TEs found in the inversion vs syntenic region. We can plot the distribution of CDS/TE number per inv/syn region in a box plot like this: 
 
