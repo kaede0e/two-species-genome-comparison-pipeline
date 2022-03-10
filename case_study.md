@@ -192,13 +192,44 @@ We will use the extensive de novo TE annotator (EDTA) pipeline which works by ma
 The program EDTA depends on many third-party software packages as it is a pipeline that combines multiple separate TE finders (LTR-FINDER, LTRharvest, generic repeat finder, HelitronScanner, etc. - refer to their Github page for details) and then filters them for redundancy, and additionally perform de novo TE annotator (RepeatModeler) to produce the curated nonredundant TE library. As a result, the pipeline comes in a package that contains everything you need which use you can download and access via either Conda or Singularity. 
 Here, we will use Singularity module to run the pipeline. 
 ```
-singularity shell -B /home -B /PATH/TO/bin/EDTA/EDTA-2.0.0.sif \
-perl /PATH/TO/bin/EDTA/EDTA.pl \
+singularity shell -B /home -B /PATH/TO/EDTA/EDTA-2.0.0.sif \
+perl /PATH/TO/EDTA/EDTA.pl \
 --genome refgenome_chr.fa \
 --cds genome_cds.fasta \
 --exclude genome_cds.bed \
 --overwrite 1 --sensitive 1 --anno 1 --threads ${SLURM_CPUS_PER_TASK}
 ```
-This command starts an interactive job that goes all the steps in EDTA pipeline and runs until completion. However, as it is a resource-heavy program and could run for days and weeks depending on the size of your genome, it may be more feasible to use scripts like 04_de_novo_TE_annotation/example_run_EDTA_by_chr.sh which divides the genome into chromosomes and performs EDTA pipeline separately. The limitation for doing this is the potential missing hits for TEs as it cannot look for TEs found across multiple chromosomes. But for our purposes, this is acceptable. 
+This command starts an interactive job that goes all the steps in EDTA pipeline and runs until completion. However, as it is a resource-heavy program and could run for days and weeks depending on the size of your genome, it may be more feasible to use scripts like 04_de_novo_TE_annotation/example_run_EDTA_by_chr.sh which divides the genome into chromosomes and performs EDTA pipeline separately. The biggest limitation for doing this is potentially missing TEs as it cannot look for TEs found across chromosomes, but it saves a lot of computational resource (and your time to wait for the job to complete) this way. 
 
+The program produces many output files, including 
+```
+All_chr_EDTA.TEanno.bed
+```
+which is the final list of TEs annotated to your refgenome with information about what type of TEs are found for each feature in bed format. This will be used in the next step in parallel with the CDS data to compare their content in syntenic region vs inverted region. 
+
+## 5. Coding sequence and transposable element in syntenic region vs. inversion 
+For figuring out how many CDS and TEs are found within syn/inv regions, we will use the software called bedtools. To run the program, first you create a list of genus you're running the analysis for. In this example, our folder is called "Prunus_genome" so we create a file "genome_pair.txt" that looks like: 
+```
+Prunus
+```
+
+Then you use the script: 
+```
+bash bedtools_for_all.sh
+```
+
+The script performs the basepair overlap analysis between the two bed files you input. In this case, we are detecting the overlap between syn/inv region file and CDS/TE features respectively. At the end, you should have these eight results created: 
+```
+bedtools_count_cds_inv.txt
+bedtools_bpoverlap_merged_cds_inv.txt
+bedtools_count_cds_syn.txt
+bedtools_bpoverlap_merged_cds_syn.txt
+bedtools_count_TE_inv.txt
+bedtools_bpoverlap_merged_TE_inv.txt
+bedtools_count_TE_syn.txt
+bedtools_bpoverlap_merged_TE_syn.txt
+```
+Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big region of features. This conveys more accurate information we're looking for (how much proportion of inv/syn region contains CDS/TE). 
+
+The last part of the pipeline shows some more deeper statistical analyses you can do on the data the pipeline has created so far. 
 
