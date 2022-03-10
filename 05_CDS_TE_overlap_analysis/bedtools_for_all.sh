@@ -13,14 +13,14 @@ cut -f 1-3 *_refgenome_chr.fa.mod.EDTA.TEanno.bed > genome_{}_TE.bed
 #genome_pair.txt lists my parent directory (ie. Citrus_genome, etc.) in rows
 for genus in `cat genome_pair.txt`;
 do
-  sort -k1,1 -k2,2n ${genus}/*_reduced_cds.bed > ${genus}/sorted_genome_cds.bed
-  bedtools merge -i ${genus}/sorted_genome_cds.bed > ${genus}/merged_cds.bed
+  sort -k1,1 -k2,2n ${genus}_genome/*_reduced_cds.bed > ${genus}_genome/sorted_genome_cds.bed
+  bedtools merge -i ${genus}_genome/sorted_genome_cds.bed > ${genus}_genome/merged_cds.bed
   #1. Inversion
-  bedtools intersect -a ${genus}/inversion_regions.bed -b ${genus}/*_reduced_cds.bed -c > ${genus}/bedtools_count_cds_inv.txt
-  bedtools intersect -a ${genus}/inversion_regions.bed -b ${genus}/merged_cds.bed -wo > ${genus}/bedtools_bpoverlap_merged_cds_inv.txt
+  bedtools intersect -a ${genus}_genome/inversion_regions.bed -b ${genus}_genome/*_reduced_cds.bed -c > ${genus}_genome/bedtools_count_cds_inv.txt
+  bedtools intersect -a ${genus}_genome/inversion_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_inv.txt
   #2. Syntenic region
-  bedtools intersect -a ${genus}/syntenic_regions.bed -b ${genus}/*_reduced_cds.bed -c > ${genus}/bedtools_count_cds_syn.txt
-  bedtools intersect -a ${genus}/syntenic_regions.bed -b ${genus}/merged_cds.bed -wo > ${genus}/bedtools_bpoverlap_merged_cds_syn.txt
+  bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/*_reduced_cds.bed -c > ${genus}_genome/bedtools_count_cds_syn.txt
+  bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_syn.txt
 done
 #For the basepair count, we should merge the TE first so that there is no overlaps and overrepresentation.
 for genus in `cat genome_pair.txt`;
