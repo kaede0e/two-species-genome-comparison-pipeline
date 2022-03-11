@@ -100,7 +100,26 @@ Prunus_bedtools_count_withTE <- full_join(Prunus_bedtools_count, Prunus_bedtools
 # data analysis and visualization 
 ## 1) How many CDS/TE are in syn/inv? 
 Prunus_bedtools_count_withTE %>%
-+ group_by(type)%>%
-+ summarise(total_number_of_CDS = sum(`nCDS(seq)`), total_number_of_TE = sum(`nTE(seq)`))
+group_by(type)%>%
+summarise(total_number_of_CDS = sum(`nCDS(seq)`), total_number_of_TE = sum(`nTE(seq)`))
 
+## 2) How much proportion of inv/syn region contains CDS or TE sequences? 
+Prunus_bedtools_bpoverlap %>%
+mutate(region_length = region_end_1 - region_start_1)%>%
+group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
+    summarise(
+        total_bpoverlap = sum(`nCDS(bp)`, na.rm = TRUE)
+    ) %>%
+mutate(proportion_of_CDS_per_region = total_bpoverlap/region_length)%>%
+    ggplot()+
+    geom_boxplot(aes(x=type, y=proportion_of_CDS_per_region))
 
+Prunus_bedtools_bpoverlap_TE %>%
+mutate(region_length = region_end_1 - region_start_1)%>%
+group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
+    summarise(
+        total_bpoverlap = sum(`nTE(bp)`, na.rm = TRUE)
+    ) %>%
+mutate(proportion_of_TE_per_region = total_bpoverlap/region_length)%>%
+    ggplot()+
+    geom_boxplot(aes(x=type, y=proportion_of_TE_per_region))
