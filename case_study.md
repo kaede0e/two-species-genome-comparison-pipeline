@@ -262,4 +262,4 @@ TE:
 <img width="380" alt="Screen Shot 2022-03-11 at 10 17 30 AM" src="https://user-images.githubusercontent.com/91504464/157926482-40f6e2a9-6b86-4604-a3bc-15f45e0cf469.png">
 
 
-This shows the distribution of CDS/TE proportions per inv/syn region. The higher area of violin indicates more data points falling in that category.
+This shows the distribution of CDS/TE proportions per inv/syn region. The larger area of violin indicates more data points falling in that category. 
