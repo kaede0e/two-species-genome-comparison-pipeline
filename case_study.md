@@ -179,7 +179,7 @@ Taking these results up to here, you can plan a further investigation into certa
 
 If you are keen to investigate the difference in some genetic content between syntenic region vs. inverted region (coding sequence (CDS) content or trnasposable element (TE)), then you may wish to continue with the pipeline below. 
 
-## 4. _de novo_ TE annotation pipeline 
+## 4. _de novo_ Transposable Element annotation pipeline 
 The next few sections are driven by some hypotheses around genomic inversions and aimed to configure their rates of occurrence. 
 1. Like most mutations are deleterious, disrupting genes by inversions is bad. Therefore, we would expect fewer genes in inversions than syntenic regions. 
 2. Like most mutations are deleterious, breaking up genes by inversions is bad. Therefore, we would expect fewer genes in inversion breakpoints compared to the rest of the genome. 
@@ -208,17 +208,17 @@ All_chr_EDTA.TEanno.bed
 which is the final list of TEs annotated to your refgenome with information about what type of TEs are found for each feature in bed format. This will be used in the next step in parallel with the CDS data to compare their content in syntenic region vs inverted region. 
 
 ## 5. Coding sequence and transposable element in syntenic region vs. inversion 
-For figuring out how many CDS and TEs are found within syn/inv regions, we will use the software called bedtools. To run the program, first you create a list of genus you're running the analysis for. In this example, our folder is called "Prunus_genome" so we create a file "genome_pair.txt" that looks like: 
+For figuring out how many CDS and TEs are found within syn/inv regions, we will use the software called bedtools. To run the program, you run the script found in 05_CDS_TE_overlap_analysis/bedtools_for_all.sh. The script is written in a way that lets you perform the overlap analyses across multiple genera listed in a text file called "genome_pair.txt" at once if you desire. So, the first thing you need to do is to create a list of genera you're running the analysis for. In this example module, our analysis has only one genus under the folder named "Prunus_genome" so we create a text file "genome_pair.txt" that looks like: 
 ```
 Prunus
 ```
 
-Then you use the script: 
+Then you call the script: 
 ```
 bash bedtools_for_all.sh
 ```
 
-The script performs the basepair overlap analysis between the two bed files you input. In this case, we are detecting the overlap between syn/inv region file and CDS/TE features respectively. At the end, you should have these eight results created: 
+The script performs the basepair overlap analysis between the two bed files you input. In this case, we are detecting the overlap between syn/inv region and CDS/TE features respectively. At the end, you should have these eight result files created: 
 ```
 bedtools_count_cds_inv.txt
 bedtools_bpoverlap_merged_cds_inv.txt
@@ -229,13 +229,33 @@ bedtools_bpoverlap_merged_TE_inv.txt
 bedtools_count_TE_syn.txt
 bedtools_bpoverlap_merged_TE_syn.txt
 ```
-Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big region of features. This conveys more accurate information we're looking for (how much proportion of inv/syn region contains CDS/TE). 
+They are all in a tabular format. Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big section of features. This conveys more accurate information we're looking for (ie. how much proportion of inv/syn region contains CDS/TE). 
 
 The count files give you how many CDS/TE are found within the syn/inv regions on the last column. 
 The bpoverlap files give you how many basepairs of CDS/TE are found to overlap with syn/inv regions on the last column. 
 
-Using these data, we can visualize and do deeper statistical analyses about inversion vs syntenic region with respect to CDS and TE content. 
+Using these data, we can visualize and do deeper statistical analyses about inversion vs syntenic region with respect to CDS and TE content. For instance, we can ask questions like 
+"Are there more CDS in the syntenic region than inverted regions?" 
+"What type of TEs are most prevaent in the genome? Are there differences in syn/inv regions?" 
+"Does the trend you see differ between different genera?" 
 
-### some ideas for further analysis in R 
-One thing you could easily pull out from the data produced by bedtools is comparing the number of CDS/TEs found in the inversion vs syntenic region. We can plot the distribution of CDS/TE number per inv/syn region in a box plot like this: 
+### Some ideas for further analysis in R 
+I have curated some example data analysis and plots you can make from bedtools analysis in 05_CDS_TE_overlap_analysis/example_Prunus_data_analysis.R
 
+1) How many CDS/TE are there? Is there a difference in syntenic region vs inversion? 
+```
+# A tibble: 2 × 3
+  type  total_number_of_CDS total_number_of_TE
+  <chr>               <int>              <int>
+1 inv                  4838               5482
+2 syn                142922              51133
+```
+If you consider the ratio between CDS and TE (remember, there are much fewer inv than syn regions analyzed), this roughly supports our first hypothesis that more TEs are found in inversions than in syntenic regions. In fact, it is assuring that there are so much more CDS found in syntenic regions (x3 the number of TEs) compared to inversions where there are actually more TEs than CDS! 
+
+2) How much proportion of inv/syn region contains CDS or TE sequences? 
+CDS: 
+![Prunus_cds_proportion](https://user-images.githubusercontent.com/91504464/157781164-b3b4d78a-584c-4335-8b26-d2b7f126274d.png)
+TE: 
+![Prunus_TE_proportion](https://user-images.githubusercontent.com/91504464/157781182-3ab1dc14-8231-4f2b-89e5-2b2dd5db4f27.png)
+
+This shows the distribution of CDS/TE proportions per inv/syn region. The higher area of violin indicates more data points falling in that category.
