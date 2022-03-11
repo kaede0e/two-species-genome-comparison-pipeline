@@ -253,9 +253,13 @@ I have curated some example data analysis and plots you can make from bedtools a
 If you consider the ratio between CDS and TE (remember, there are much fewer inv than syn regions analyzed), this roughly supports our first hypothesis that more TEs are found in inversions than in syntenic regions. In fact, it is assuring that there are so much more CDS found in syntenic regions (x3 the number of TEs) compared to inversions where there are actually more TEs than CDS! 
 
 2) How much proportion of inv/syn region contains CDS or TE sequences? 
+
 CDS: 
-![Prunus_cds_proportion](https://user-images.githubusercontent.com/91504464/157781164-b3b4d78a-584c-4335-8b26-d2b7f126274d.png)
+<img width="384" alt="Screen Shot 2022-03-11 at 10 19 09 AM" src="https://user-images.githubusercontent.com/91504464/157926987-25ca0a42-25c5-4e1d-962a-5aa5f16a0fbe.png">
+
+
 TE: 
-![Prunus_TE_proportion](https://user-images.githubusercontent.com/91504464/157781182-3ab1dc14-8231-4f2b-89e5-2b2dd5db4f27.png)
+<img width="380" alt="Screen Shot 2022-03-11 at 10 17 30 AM" src="https://user-images.githubusercontent.com/91504464/157926482-40f6e2a9-6b86-4604-a3bc-15f45e0cf469.png">
+
 
 This shows the distribution of CDS/TE proportions per inv/syn region. The higher area of violin indicates more data points falling in that category.
