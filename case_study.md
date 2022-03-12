@@ -231,7 +231,7 @@ bedtools_bpoverlap_merged_TE_inv.txt
 bedtools_count_TE_syn.txt
 bedtools_bpoverlap_merged_TE_syn.txt
 ```
-They are all in a tabular format. Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big section of features. This conveys more accurate information we're looking for (ie. how much proportion of inv/syn region contains CDS/TE). 
+They are all in tabular format. Note that the basepair overlap analyses was performed on the 'merged' CDS/TE file which means any overlapping features (eg. some gene annotation file includes essentially the same gene multiple times but identifies them as isoforms, which can lead to falsely overrepresentated regions) are combined and treated as one big section of features. This conveys more accurate information we're looking for (ie. how much proportion of inv/syn region contains CDS/TE). 
 
 The count files give you how many CDS/TE are found within the syn/inv regions on the last column. 
 The bpoverlap files give you how many basepairs of CDS/TE are found to overlap with syn/inv regions on the last column. 
