@@ -203,7 +203,7 @@ perl /PATH/TO/EDTA/EDTA.pl \
 ```
 This command starts an interactive job that goes all the steps in EDTA pipeline and runs until completion. However, as it is a resource-heavy program and could run for days and weeks depending on the size of your genome, it may be more feasible to use scripts like 04_de_novo_TE_annotation/example_run_EDTA_by_chr.sh which divides the genome into chromosomes and performs EDTA pipeline separately. The biggest limitation for doing this is potentially missing TEs as it cannot look for TEs found across chromosomes, but it saves a lot of computational resource (and your time to wait for the job to complete) this way. 
 
-The program produces many output files, including 
+The program produces many output files, but in the end we curate the results from separate chromosomes into a combined file named 
 ```
 All_chr_EDTA.TEanno.bed
 ```
