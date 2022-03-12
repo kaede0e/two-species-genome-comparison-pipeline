@@ -292,9 +292,9 @@ Let's see. The summary stats tell us:
 7 Pd07                 19.3
 8 Pd08                 18.5
 ```
-Which seems to suggest about 20% of the almond genome is composed of transposable elements. Compared to other plant species or animal genomes, this seems a bit low. However, as we discussed in 'eukaryotic genome' lecture, there is a strong linear correlation between genome size and TE content in eukaryotic genomes (https://link-springer-com.ezproxy.library.uvic.ca/article/10.1007/s13258-017-0522-y). Taking into consideration that Prunus dulcis genome is relatively small (228Mbp), this TE content can be said average. As a comparison, _Arabidopsis thaliana_ genome is ~15% TEs (135Mbp), _Zea mays_ genome has ~85% TEs (2.4Gbp). 
+Which seems to suggest about 20% of the almond genome is composed of transposable elements. Compared to other plant species or animal genomes, this seems a bit low. However, as we discussed in 'eukaryotic genome' lecture, there is a strong positive correlation between genome size and TE content in eukaryotic genomes. Taking into consideration that Prunus dulcis genome is relatively small (228Mbp), this TE content can be said average. As a comparison (https://doi.org/10.1155/2011/893546), Arabidopsis genome is ~15% TEs (125Mbp), rice genome is ~35% TEs (472Mbp), maize genome is ~85% TEs (2.3Gbp). TEs have recently gained a lot of attention and have shifted the concept of being 'junk' DNA to a key regulator that holds evolutionary roles especially in plant genomes. Plants are sessile. It is stuck in where it grows. But at the same time, it needs to fight against both biotic and abiotic stresses. At times of changing climate, for instance, it cannot escape by moving to a different habitat but it must adapt by changing its own abiotic stress-coping mechanisms. 
 
- 
+
 TE: 
 <img width="380" alt="Screen Shot 2022-03-11 at 10 17 30 AM" src="https://user-images.githubusercontent.com/91504464/157926482-40f6e2a9-6b86-4604-a3bc-15f45e0cf469.png">
 
