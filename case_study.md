@@ -182,7 +182,7 @@ Taking these results up to here, you can plan a further investigation into certa
 If you are keen to investigate the difference in some genetic content between syntenic region vs. inverted region (coding sequence (CDS) content or trnasposable element (TE)), then you may wish to continue with the pipeline below. 
 
 ## 4. _de novo_ Transposable Element annotation pipeline 
-The next few sections are driven by some hypotheses around genomic inversions and aimed to configure their rates of occurrence. 
+The next few sections are driven by some hypotheses around genomic inversions.  
 1. Like most mutations are deleterious, disrupting genes by inversions is bad. Therefore, we would expect fewer genes in inversions than syntenic regions. 
 2. Like most mutations are deleterious, breaking up genes by inversions is bad. Therefore, we would expect fewer genes in inversion breakpoints compared to the rest of the genome. 
 3. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect more TEs in inversions than syntenic regions. 
