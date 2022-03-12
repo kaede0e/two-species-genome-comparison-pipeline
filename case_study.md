@@ -299,7 +299,7 @@ Which seems to suggest about 20% of the almond genome is composed of transposabl
 
 Additionally, I'm interested in asking: What type of TEs are the most prevalent in _Prunus dulcis_? 
 Because we've run the pipeline chromosome-by-chromosome, we can additionally ask: "Does the trend differ by chromosomes?"
-To answer these questions somewhat, we can do some stats in R to get summary function like this based on the TE category available in EDTA: 
+To answer these questions somewhat, we can do some stats in R to get summary like this based on the TE category available in EDTA: 
 ```
 Prunus_TE_table %>%
 group_by(Class)%>%
