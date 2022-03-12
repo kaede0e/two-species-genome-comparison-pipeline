@@ -1,19 +1,20 @@
 # Case study: Genome comparison between almond (Prunus dulcis) and apricot (Prunus armeniaca)
 <img width="534" alt="Screen Shot 2022-03-06 at 7 06 24 PM" src="https://user-images.githubusercontent.com/91504464/156960974-db044e5d-5b7d-40a0-bb57-5745855a5566.png">
-As it was mentioned in the introduction, this pipeline is not limited to one study system. For example, you could apply this pipeline to your animal genomes, microorganisms, insects, or plants as long as high-quality genome is available for both species you’re comparing, and they are reasonably close in their phylogeny. Here, we will walk through the pipeline using Prunus species in plant kingdom to illustrate what each command/code does and outputs, and let you adjust to your needs. 
+As it was mentioned in the introduction, this pipeline is not limited to one study system. For example, you could apply this pipeline to your animal genomes, microorganisms, insects, or plants as long as high-quality genome is available for both species you’re comparing, and they are reasonably close in their phylogeny. Here, we will walk through the pipeline using Prunus species in plant kingdom to illustrate what each command/code does and outputs, and discuss what they mean or might indicate in terms of molecular evolution. 
 
-Data collected from: 
+
+Data for this tutorial collected from: 
 - Alioto T, Alexiou KG, Bardil A, Barteri F, Castanera R, Cruz F, Dhingra A, Duval H, Fernández i Martí A, Frias L, Galán B, García JL, Howad W, Gómez‐Garrido J, Gut M, Julca I, Morata J, Puigdomènech P, Ribeca P, Rubio Cabetas MJ, Vlasova A, Wirthensohn M, Garcia‐Mas J, Gabaldón T, Casacuberta JM, Arús P. Transposons played a major role in the diversification between the closely related almond and peach genomes: results from the almond genome sequence. plant journal. 2020; 101(2):455-472.
-- Groppi A, Liu S, Cornille A, Decroocq S, Bui QT, Tricon D, Cruaud C, Arribat S, Belser C, Marande W, Salse J, Huneau C, Rodde N, Rhalloussi W, Cauet S, Istace B, Denis E, Carrère S, Audergon JM, Roch G, Lambert P, Zhebentyayeva T, Liu WS, Bouchez O, Lopez-Roques C, Serre RF, Debuchy R, Tran J, Wincker P, Chen X, Pétriacq P, Barre A, Nikolski M, Aury JM, Abbott AG, Giraud T, Decroocq V. Population genomics of apricots unravels domestication history and adaptive events.. Nature communications. 2021 06 25; 12(1):3956.
+- Groppi A, Liu S, Cornille A, Decroocq S, Bui QT, Tricon D, Cruaud C, Arribat S, Belser C, Marande W, Salse J, Huneau C, Rodde N, Rhalloussi W, Cauet S, Istace B, Denis E, Carrère S, Audergon JM, Roch G, Lambert P, Zhebentyayeva T, Liu WS, Bouchez O, Lopez-Roques C, Serre RF, Debuchy R, Tran J, Wincker P, Chen X, Pétriacq P, Barre A, Nikolski M, Aury JM, Abbott AG, Giraud T, Decroocq V. Population genomics of apricots unravels domestication history and adaptive events. Nature communications. 2021 06 25; 12(1):3956.
 
 ## 0. Download genomes and gene annotation file and unzip all
-The default scripts are written in a way so that all your genomes and other data are deposited under a parent directory named "Genus_genome". 
+The default scripts are written in a way so that all your genomes and other data are deposited under a parent directory named "xxxx_genome" where xxxx = Genus name. 
 In this tutorial, we are analyzing the Prunus genome so we are going to make a directory named "Prunus_genome". 
 ```
 mkdir Prunus_genome
 cd Prunus_genome
 ```
-Then we will download the following raw genome assembly into the directory we just created. 
+Then we will download the following genome assembly into the directory we just created. 
 
 Prunus dulcis genome (refgenome): 
 ```
@@ -49,7 +50,7 @@ cat qrygenome.fa | grep ">chr" | sed s/">"//g > qrygenome_chr_names.txt
 samtools faidx qrygenome.fa -r qrygenome_chr_names.txt > qrygenome_chr.fa
 ```
 ### 1.2 Process gene annotation file
-The gff3 is the common format for gene annotation. Annotation file describes what feature of the genome is found in where in the genome. It generally contains many information including the locations of coding sequence (CDS), genes, exons, mRNA, etc. in the genome. However, our downstream analysis requires the use of bed formatted files (another way of describing locations of features) and we're only interested in CDS. The reason for choosing only CDS is that we want to look at regions that could make a significant phenotypic effect to the organism. CDS is where the sequences are actively translated to proteins, performing functional roles in an organism and it's where the nonsynonymous mutations arise that lead to evolutionary implications. 
+The gff3 is the common format for gene annotation. Annotation file describes what feature of the genome is found in where in the genome. It generally contains many information including the locations of coding sequence (CDS), genes, exons, mRNA, etc. in the genome. However, our downstream analysis requires the use of bed formatted files (another way of describing locations of features; column 1 - chromosome name, column 2 - start of chromosome, column 3 - end of chromosome) and we're only interested in CDS. The reason for choosing only CDS is that we want to look at regions that could make a significant phenotypic effect to the organism. CDS is where the sequences are actively translated to proteins, more likely involved with functional roles in an organism and it's where the nonsynonymous mutations arise that lead to evolutionary implications. 
 
 Extract CDS from gff3 (or any gff formatted gene annotation file)
 ```
@@ -64,7 +65,7 @@ Now you have all the input data you need for the pipeline to run!
 
 ## 2. Genome alignment and structural variant detection 
 
-The script to run this section in one step is found in 02_genome_alignment_SV_detection/run_syri_automation.sh. If you are to reproduce the whole pipeline, you would simply run: 
+This is a multi-step section as outlined in SyRI pipeline for two species genomes.md. The script to run this section in one-step is found in 02_genome_alignment_SV_detection/run_syri_automation.sh. If you are to reproduce the whole pipeline, you would simply run: 
 ```
 cd ..
 sbatch run_syri_automation.sh Prunus
@@ -80,9 +81,9 @@ syri.summary
 invOut_table.txt 
 synOut_table.txt
 ```
-"minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out", "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
+"minimap2_ref_qrygenome_chr_alignment.sam" is your alignment result in SAM format, "syri.out" and "syri.vcf" are the genomic structural differences identified by SyRI in tabular format (TSV and VCF format respectively) which includes syntenic region, inverted region, translocation, duplication, and small variants (SNPs and InDels). "syri.summary" summarises the stats related to how many of those features were found in the genome alignment. "invOut_table.txt" and "synOut_table.txt" provide us the useful % identity scores for each aligned region. Because we are interested in comparing syntenic region vs inverted region and computing species divergence score from sequence alignment, these score tables are crucial in the subsequent analyses. 
 
-Additionally, to compute species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). 
+Additionally, to compute species divergence score more accurately, we need to consider the length and % identity of each small aligned blocks that constitute those larger syntenic and invereted regions. This score is not found directly in any of the SyRI output files and we need to extract these using the command 02_genome_alignment_SV_detection/samtocoords.py or 02_genome_alignment_SV_detection/samtocoords.sh using minimap2 result (SAM). On my Linux commandline system, it looks like this: 
 ```
 python3       #the three ">" appears which tells you that you're writing python command
 >>> from syri.pyxFiles.synsearchFunctions import samtocoords
@@ -90,7 +91,7 @@ python3       #the three ">" appears which tells you that you're writing python 
 >>> table.to_csv(r'table.txt', index = False, sep = '\t') #makes table.txt file in CSV format in current directory
 exit()
 ```
-So now, you should have the following output files in your working directory: 
+Once you get the score table, you should have the following output files in your working directory: 
 ```
 minimap2_ref_qrygenome_chr_alignment.sam
 syri.out
@@ -106,8 +107,9 @@ At this point, it is useful to visually see what the alignment and structural va
 Once we have "table.txt", we can plot the alignment using 02_genome_alignment_SV_detection/visualize_genome_alignment.R which creates the following figure in R: 
 ![coords_file_for_visualization_original v0](https://user-images.githubusercontent.com/91504464/157148323-ef152261-3dc7-4be3-9236-dbd4bb84db3c.png)
 Each box is representative of the aligned chromosome from refgenome on x-axis and qrygenome on y-axis. When the two genome sequences match perfectly (syntenic), then the straight right-side-up diagonal line will appear. What it means is that the position of the reference chromosome aligns with the same position on the query chromosome. So when large structural variants such as inversions are found, the position on query chromosome slides by some sequences/position, and aligns to the reference chromosome in the opposite direction resulting in left-side-up diagonal. Different colours represent the direction of the alignment (+ in blue or - in black based on which way the alignd sequence was read). 
+Overall, this plot shows a good genome alignment between _Prunus dulcis_ and _Prunus armeniaca_ which assures that the program ran properly. However, it's worth mentioning that some sections on chromosome 7 and 8 have poor alignment (where the two parallel diagonal lines appear), which may be indicative of partial genome duplications or genome misassemblies. As it was mentioned in the introduction of the module, the pipeline is limited by the quality of genome assemblies. The more accurate assemblies are, the more accurate our interpretation of the results. 
 
-For visualizing the structural variants identified by SyRI, fortunately, SyRI provides this straightforward script to produce the figure: 
+For visualizing the structural variants identified by SyRI, you can use their built-in script to produce the figure: 
 ```
 source /PATH/TO/python_env
 pip install matplotlib
@@ -116,7 +118,7 @@ python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
 The script makes "syri.pdf" figure in your curret directory which looks like this: 
 <img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
 
-and you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-check that both figures are roughly matching in alignment. Here, especially the large inversion in the end of chromosome 4 (Pd04) stands out in both plots. 
+Now you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-check that both figures are roughly matching in alignment. Here, especially the large inversion in the end of chromosome 4 (Pd04) stands out in both plots. Rich source of small-size variations is detected in chromosome 2 and 3 (Pd02, Pd03) while chromosome 1 and 5 (Pd01, Pd05) are highly conserved. These are qualitative observations that can serve as a good starting point to dig further 
 
 ### Troubleshooting tips ###
 If you are stuck on somewhere in the pipline and doesn't proceed to completion, it is a good idea to see which step is causing the problem. Break-up scripts are uploaded for you to do this. 
@@ -257,9 +259,43 @@ If you consider the ratio between CDS and TE (remember, there are much fewer inv
 CDS: 
 <img width="384" alt="Screen Shot 2022-03-11 at 10 19 09 AM" src="https://user-images.githubusercontent.com/91504464/157926987-25ca0a42-25c5-4e1d-962a-5aa5f16a0fbe.png">
 
+This boxplot shows the distribution of CDS/TE proportions per inv/syn region. If you are unfamiliar with the boxplot, it's a useful plot to present a lot of data points in a meaningful way. The black solid line in the middle indicates the median number, surrounded by the  This was unexpected and rather a weird looking distribution as we expected far higher CDS proportion in syntenic region than inversions while the results are showing more proportion of CDS in inversions than syntenic regions. 
+What if we account for the length of each inv/syn region? First, let's see if there is a significant difference in inv/syn region from the dataset: 
+```
+# A tibble: 2 × 2
+  type  `mean(region_length)`
+  <chr>                 <dbl>
+1 inv                1496259.
+2 syn                 176418.
+```
+Hmm, interesting. So the mean length of syntenic region is 10x smaller than the mean length of inverted regions identified. 
+I think this is a garbage analysis that I can't really make any explanations at all. 
 
+
+What about TEs? 
+
+I'm interested in asking: What type of TEs are the most prevalent in _Prunus dulcis_(refgenome)? 
+Recall from the TE annotation program, it made a lot of output files and one of them includes stats summary file called "xxxx.mod.EDTA.TEanno.sum" where xxxx is your input genome/chromosome (if you did by chromosome-by-chromosome). The file shows you what type of TEs were found and how much it they occupy relative to the whole input genome/chromosome length. 
+Because we've run the pipeline chromosome-by-chromosome, we can additionally ask: "Does the trend differ by chromosomes?"
+
+Let's see. The summary stats tell us: 
+```
+# A tibble: 8 × 2
+  chr   total_percent_of_TE
+  <chr>               <dbl>
+1 Pd01                 22.1
+2 Pd02                 22.5
+3 Pd03                 21.8
+4 Pd04                 22.0
+5 Pd05                 16.6
+6 Pd06                 22.8
+7 Pd07                 19.3
+8 Pd08                 18.5
+```
+Which seems to suggest about 20% of the almond genome is composed of transposable elements. Compared to other plant species or animal genomes, this seems a bit low. However, as we discussed in 'eukaryotic genome' lecture, there is a strong linear correlation between genome size and TE content in eukaryotic genomes (https://link-springer-com.ezproxy.library.uvic.ca/article/10.1007/s13258-017-0522-y). Taking into consideration that Prunus dulcis genome is relatively small (228Mbp), this TE content can be said average. As a comparison, _Arabidopsis thaliana_ genome is ~15% TEs (135Mbp), _Zea mays_ genome has ~85% TEs (2.4Gbp). 
+
+ 
 TE: 
 <img width="380" alt="Screen Shot 2022-03-11 at 10 17 30 AM" src="https://user-images.githubusercontent.com/91504464/157926482-40f6e2a9-6b86-4604-a3bc-15f45e0cf469.png">
 
 
-This shows the distribution of CDS/TE proportions per inv/syn region. The larger area of violin indicates more data points falling in that category. 
