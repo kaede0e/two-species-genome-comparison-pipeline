@@ -115,10 +115,10 @@ source /PATH/TO/python_env
 pip install matplotlib
 python3 $PATH_TO_PLOTSR syri.out refgenome_chr.fa qrygenome_chr.fa -H 8 -W 5
 ```
-The script makes "syri.pdf" figure in your curret directory which looks like this: 
+The script above makes "syri.pdf" figure in your curret directory which looks like this: 
 <img width="578" alt="rotated" src="https://user-images.githubusercontent.com/91504464/157101596-a56ae954-b854-4a1c-9953-8eb49f2e7f84.png">
 
-Now you can see interesting genomic structural variants present between apricot and almond genomes more intuitively. It is always a good idea to double-check that both figures are roughly matching in alignment. Here, especially the large inversion in the end of chromosome 4 (Pd04) stands out in both plots. Rich source of small-size variations is detected in chromosome 2 and 3 (Pd02, Pd03) while chromosome 1 and 5 (Pd01, Pd05) are highly conserved. These are qualitative observations that can serve as a good starting point to dig further 
+Now you can see interesting genomic structural variants present between the two genomes more intuitively. It is always a good idea to double-check that both figures are roughly matching in alignment. Here, especially the large inversion in the end of chromosome 4 (Pd04) stands out in both plots. Rich source of small-size variations is detected in chromosome 2 and 3 (Pd02, Pd03) while chromosome 1 and 5 (Pd01, Pd05) are highly conserved. These are qualitative observations that can serve as a good starting point to dig further into what evolutionary importance these divergent regions may have to the species. 
 
 ### Troubleshooting tips ###
 If you are stuck on somewhere in the pipline and doesn't proceed to completion, it is a good idea to see which step is causing the problem. Break-up scripts are uploaded for you to do this. 
