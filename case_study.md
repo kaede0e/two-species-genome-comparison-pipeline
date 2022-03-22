@@ -260,17 +260,7 @@ If you consider the ratio between CDS and TE (remember, there are much fewer inv
 CDS: 
 <img width="384" alt="Screen Shot 2022-03-11 at 10 19 09 AM" src="https://user-images.githubusercontent.com/91504464/157926987-25ca0a42-25c5-4e1d-962a-5aa5f16a0fbe.png">
 
-This violin plot shows the distribution of CDS/TE proportions per inv/syn region. The area of the violin corresponds to the number of data points. This was unexpected and rather a weird looking distribution as we expected far higher CDS proportion in syntenic region than inversions while the results are showing more proportion of CDS in inversions than syntenic regions. 
-What if we account for the length of each inv/syn region? First, let's see if there is a significant difference in inv/syn region from the dataset: 
-```
-# A tibble: 2 × 2
-  type  `mean(region_length)`
-  <chr>                 <dbl>
-1 inv                1496259.
-2 syn                 176418.
-```
-Hmm, interesting. So the mean length of syntenic region is 10x smaller than the mean length of inverted regions identified. 
-I think this is a garbage analysis that I can't really make any explanations AT ALL. 
+This violin plot shows the distribution of CDS/TE proportions per inv/syn region. The area of the violin corresponds to the number of data points. This was unexpected and rather a weird looking distribution as we expected far higher CDS proportion in syntenic region than inversions while the results are showing more proportion of CDS in inversions than syntenic regions. I would suspect that this is due to very small inversion regions identified compared to syntenic regions, making the comparison rather unequally weighted. There is no further explanations I can think of from this plot, unfortunately. 
 
 
 Okay, what about TEs? 
@@ -280,7 +270,7 @@ TE:
 
 The same violin plot for TE seems to provide no support for our TE driving inversion hypothesis. But this is okay as it is a real data (painful...). It's good to keep in mind whenever you encounter a non-significant result, and not get too depressed about it because that is what it is. (Remember the null hypothesis and importance of neutral, null result!) 
 
-But this is not fun to end this tutorial. Let's see if we can analyze something interesting about TEs in this genome. Recall from EDTA pipeline, it made a lot of output files and one of them includes stats summary file called "xxxx.mod.EDTA.TEanno.sum" where xxxx is your input genome/chromosome (if you did by chromosome-by-chromosome). The file shows you what type of TEs were found and how much it they occupy relative to the whole input genome/chromosome length. 
+But this is not fun to end this tutorial. Let's see if we can analyze something interesting about TEs in this genome. Recall from EDTA pipeline, it made a lot of output files and one of them includes stats summary file called "xxxx.mod.EDTA.TEanno.sum" where xxxx is your input genome/chromosome (if you did by chromosome-by-chromosome). The file shows you what type of TEs were found and how much they occupy relative to the whole input genome/chromosome length. 
 
 This summary stats from EDTA tell us: 
 ```
@@ -296,11 +286,11 @@ This summary stats from EDTA tell us:
 7 Pd07                 19.3
 8 Pd08                 18.5
 ```
-Which seems to suggest about 20% of the almond genome is composed of transposable elements. Compared to other plant species or animal genomes, this seems a bit low. However, as we discussed in 'eukaryotic genome' lecture, there is a strong positive correlation between genome size and TE content in eukaryotic genomes. Taking into consideration that Prunus dulcis genome is relatively small (228Mbp), this TE content can be said average. As a comparison (https://doi.org/10.1155/2011/893546), Arabidopsis genome is ~15% TEs (125Mbp), rice genome is ~35% TEs (472Mbp), maize genome is ~85% TEs (2.3Gbp). TEs have recently gained a lot of attention and have shifted the concept of being 'junk' DNA to a key regulator that holds evolutionary roles especially in plant genomes. Plants are sessile. It is stuck in where it grows. But at the same time, it needs to fight against both biotic and abiotic stresses. At times of changing climate, for instance, it cannot escape by moving to a different habitat but it must adapt by changing its own abiotic stress-coping mechanisms. TEs can be said their great molecular tools because of its 'mobile' nature which allows to proliferate in the genome, allowing a rapid physiological change which may be more suited to the changing climate. 
+Which seems to suggest about 20% of the almond genome is composed of transposable elements. Compared to other plant species or animal genomes, this seems a bit low. However, as we discussed in 'eukaryotic genome' lecture, there is a strong positive correlation between genome size and TE content in eukaryotic genomes. Taking into consideration that _Prunus dulcis_ genome is relatively small (228Mbp), this TE content can be said average. As a comparison (https://doi.org/10.1155/2011/893546), Arabidopsis genome is ~15% TEs (125Mbp), rice genome is ~35% TEs (472Mbp), maize genome is ~85% TEs (2.3Gbp). TEs have recently gained a lot of attention and have shifted the concept of being 'junk' DNA to a key regulator that holds evolutionary roles especially in plant genomes. Plants are sessile. It is stuck in where it grows. But at the same time, it needs to fight against both biotic and abiotic stresses. At times of changing climate, for instance, it cannot escape by moving to a different habitat but it must adapt by changing its own abiotic stress-coping mechanisms. TEs can be their great molecular tools because of its 'mobile' nature which allows to proliferate in the genome, allowing a rapid physiological change which may be more suited to the changing climate. 
 
 Additionally, I'm interested in asking: What type of TEs are the most prevalent in _Prunus dulcis_? 
 Because we've run the pipeline chromosome-by-chromosome, we can additionally ask: "Does the trend differ by chromosomes?"
-To answer these questions somewhat, we can do some stats in R to get summary like this based on the TE category available in EDTA: 
+To answer these questions, we can do some stats in R to get summary like this based on the TE category available in EDTA: 
 ```
 Prunus_TE_table %>%
 group_by(Class)%>%
@@ -323,3 +313,5 @@ summarise(mean_percent = mean(percent_masked))
 ```
 The "repeat_region" is not very informative as it doesn't fall under any families of TEs, but we can infer that LTR or long terminal repeat is the most common class as consistent with other plant genomes. In _Prunus dulcis_ genome, the TIR or terminal inverted repeat seems also common. 
 
+
+I hope the pipeline gave you a hands-on experience to perform genomic analysis and reveal something interesting about two species genomes of your interest! 
