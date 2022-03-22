@@ -173,18 +173,19 @@ You should expect a normal distribution but some may appear skewed. The vertical
 Inversion plot
 ![Prunus_inv_plot2](https://user-images.githubusercontent.com/91504464/157343746-76a3c79f-1e2a-48a9-bf6a-34e85c213e9b.png)
 
-For inversions, the idea of sequence identity is similar to how we would interpret the syn_plot. Although inversions do reduce recombination rate within the region compared to other parts of the genome, they can still undergo mutations over time. As a result, the lower % identity or the smaller value in x-axis on this plot indicate the presence of potentially old, ancient inversions occurred in the ancestor of the two species. (Beware of the big difference in counts as there are much fewer inversions than syntenic regions between closely related species genomes. Don't overinterpret things based on the instant appearances.) 
+For inversions, the idea of sequence identity is similar to how we would interpret the syn_plot. Although inversions do reduce recombination rate within the region compared to other parts of the genome, they can still undergo mutations over time with baseline recombinations. As a result, the lower % identity or the smaller value in x-axis on this plot indicate the presence of potentially old, ancient inversions occurred in the ancestor of the two species which could be interesting to look into. These old inversions mean that they got fixed and maintained in the population, could have had neutral impact to the species or beneficial, but most likely not deleterious. (Beware of the big difference in counts as there are much fewer inversions than syntenic regions between closely related species genomes. Don't overinterpret things based on the instant appearances.) 
 
 ### Checkpoint ### 
-Taking these results up to here, you can plan a further investigation into certain structural variants detected, or maybe do a BLAST search on what genes are found in these regions that might have an evolutionary significance. Performing the same steps on multiple species of the same genus might also give you an interesting insight about species relationships and genomic architecture. 
+Taking these results up to here, you can plan a further investigation into certain structural variants detected, or maybe do a BLAST search on what genes are found in these regions that might have an evolutionary significance. Performing the same steps on multiple species of the same genus might also give you an interesting insight about species relationships and genomic architecture for your study organisms. 
 
 
 If you are keen to investigate the difference in some genetic content between syntenic region vs. inverted region (coding sequence (CDS) content or trnasposable element (TE)), then you may wish to continue with the pipeline below. 
 
+
 ## 4. _de novo_ Transposable Element annotation pipeline 
 The next few sections are driven by some hypotheses around genomic inversions.  
-1. Like most mutations are deleterious, disrupting genes by inversions is bad. Therefore, we would expect fewer genes in inversions than syntenic regions. 
-2. Like most mutations are deleterious, breaking up genes by inversions is bad. Therefore, we would expect fewer genes in inversion breakpoints compared to the rest of the genome. 
+1. Like most mutations are deleterious, and disrupting genes by inversions is bad. Therefore, we would expect fewer genes in inversions than syntenic regions. 
+2. Like most mutations are deleterious, and breaking up genes by inversions is bad. Therefore, we would expect fewer genes in inversion breakpoints compared to the rest of the genome. 
 3. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect more TEs in inversions than syntenic regions. 
 4. Transposable elements (TEs) are thought to be the driver of inversions. Therefore, we would expect enriched presence of TEs in inversion breakpoints compared to the rest of the genome. 
 
@@ -236,7 +237,7 @@ They are all in tabular format. Note that the basepair overlap analyses was perf
 The count files give you how many CDS/TE are found within the syn/inv regions on the last column. 
 The bpoverlap files give you how many basepairs of CDS/TE are found to overlap with syn/inv regions on the last column. 
 
-Using these data, we can visualize and do deeper statistical analyses about inversion vs syntenic region with respect to CDS and TE content. For instance, we can ask questions like 
+Using these data, we can visualize and analyze trends in inversion vs syntenic region with respect to CDS and TE content. For instance, we can ask questions like 
 "Are there more CDS in the syntenic region than inverted regions?" 
 "What type of TEs are most prevaent in the genome? Are there differences in syn/inv regions?" 
 "Does the trend you see differ between different genera?" 
