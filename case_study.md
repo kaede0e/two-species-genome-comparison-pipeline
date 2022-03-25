@@ -268,7 +268,7 @@ Okay, what about TEs?
 TE: 
 <img width="380" alt="Screen Shot 2022-03-11 at 10 17 30 AM" src="https://user-images.githubusercontent.com/91504464/157926482-40f6e2a9-6b86-4604-a3bc-15f45e0cf469.png">
 
-The same violin plot for TE seems to provide no support for our TE driving inversion hypothesis. But this is okay as it is a real data (painful...). It's good to keep in mind whenever you encounter a non-significant result, and not get too depressed about it because that is what it is. (Remember the null hypothesis and importance of neutral, null result!) 
+The same violin plot for TE seems to provide no support for our TE driving inversion hypothesis. It's good to keep in mind whenever you encounter a non-significant result, remember the null hypothesis and importance of null result (neutral theory). 
 
 But this is not fun to end this tutorial. Let's see if we can analyze something interesting about TEs in this genome. Recall from EDTA pipeline, it made a lot of output files and one of them includes stats summary file called "xxxx.mod.EDTA.TEanno.sum" where xxxx is your input genome/chromosome (if you did by chromosome-by-chromosome). The file shows you what type of TEs were found and how much they occupy relative to the whole input genome/chromosome length. 
 
