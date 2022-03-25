@@ -8,15 +8,15 @@ genus=$1
 echo $genus
 
 #0 Give paths to the command and load modules
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin2/anchorwave/minimap2/
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri
-export PATH=$PATH:/home/kaedeh/scratch/paired_genome_for_syri
+export PATH=$PATH:/PATH/TO/anchorwave/minimap2/
+export PATH=$PATH:/PATH/TO/bin
+export PATH=$PATH:/PATH/TO/bin/syri
+export PATH=$PATH:/PATH/TO/YOURDATA
 
 module load scipy-stack
-source /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/python_env/bin/activate
-PATH_TO_SYRI="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/syri"
-PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/plotsr"
+source /PATH/TO/python_env/bin/activate
+PATH_TO_SYRI="/PATH/TO/bin/syri/syri/bin/syri"
+PATH_TO_PLOTSR="/PATH/TO/bin/syri/syri/bin/plotsr"
 
 #1 reverse chromosomes from chr_to_rev file and redo minimap
   rm -r ${genus}_genome/qrygenome_chr ;
