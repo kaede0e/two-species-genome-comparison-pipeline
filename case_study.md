@@ -318,5 +318,5 @@ I hope the pipeline gave you a hands-on experience to perform genomic analysis a
 
 
 References: 
-Civáň, Peter, Miroslav Švec, and Pavol Hauptvogel. 2011. “On the Coevolution of Transposable Elements and Plant Genomes.” Edited by Curtis C Daehler. Journal of Botany 2011: 893546. https://doi.org/10.1155/2011/893546
-Stitzer MC, Anderson SN, Springer NM, Ross-Ibarra J (2021) The genomic ecosystem of transposable elements in maize. PLOS Genetics 17(10): e1009768. https://doi.org/10.1371/journal.pgen.1009768
+* Civáň, Peter, Miroslav Švec, and Pavol Hauptvogel. 2011. “On the Coevolution of Transposable Elements and Plant Genomes.” Edited by Curtis C Daehler. Journal of Botany 2011: 893546. https://doi.org/10.1155/2011/893546
+* Stitzer MC, Anderson SN, Springer NM, Ross-Ibarra J (2021) The genomic ecosystem of transposable elements in maize. PLOS Genetics 17(10): e1009768. https://doi.org/10.1371/journal.pgen.1009768
