@@ -8,15 +8,15 @@ genus=$1
 echo $genus
 
 #0 Give paths to the command and load modules
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin2/anchorwave/minimap2/
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri
-export PATH=$PATH:/home/kaedeh/scratch/paired_genome_for_syri
+export PATH=$PATH:/PATH/TO/anchorwave/minimap2/
+export PATH=$PATH:/PATH/TO/bin
+export PATH=$PATH:/PATH/TO/bin/syri
+export PATH=$PATH:/PATH/TO/YOURDATA
 
 module load scipy-stack
-source /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/python_env/bin/activate
-PATH_TO_SYRI="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/syri"
-PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/plotsr"
+source /PATH/TO/python_env/bin/activate
+PATH_TO_SYRI="/PATH/TO/bin/syri/syri/bin/syri"
+PATH_TO_PLOTSR="/PATH/TO/bin/syri/syri/bin/plotsr"
 
 python3 $PATH_TO_SYRI \
 -c ${genus}_genome/minimap2_ref_qrygenome_chr_alignment.sam \
