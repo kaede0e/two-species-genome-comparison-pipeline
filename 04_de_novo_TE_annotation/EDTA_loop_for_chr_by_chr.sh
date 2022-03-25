@@ -34,15 +34,15 @@ do
   singularity exec -B /home -B /project -B /scratch -B /localscratch /PATH/TO/bin/EDTA/EDTA-2.0.0.sif \
 perl /PATH/TO/bin/EDTA/EDTA_raw.pl \
 --genome chr_by_chr_fasta/${file}.fwd.fa \
---cds aradu.V14167.gnm1.ann1.cxSM.cds.fna \
---exclude Arachis_duranensis_chr_renamed_cds.bed \
+--cds refgenome_cds.fa \
+--exclude genome_cds.bed \
 --overwrite 1 --sensitive 1 --anno 1 --threads ${SLURM_CPUS_PER_TASK}
 
   singularity exec -B /home -B /project -B /scratch -B /localscratch /PATH/TO/bin/EDTA/EDTA-2.0.0.sif \
 perl /PATH/TO/EDTA/EDTA.pl \
 --genome chr_by_chr_fasta/${file}.fwd.fa \
---cds aradu.V14167.gnm1.ann1.cxSM.cds.fna \
---exclude Arachis_duranensis_chr_renamed_cds.bed \
+--cds refgenome_cds.fa \
+--exclude genome_cds.bed \
 --overwrite 0 --sensitive 1 --anno 1 --threads ${SLURM_CPUS_PER_TASK}
 done
 
