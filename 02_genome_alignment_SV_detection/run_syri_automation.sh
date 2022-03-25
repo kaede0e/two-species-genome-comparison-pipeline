@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --time=12:00:00
-#SBATCH --account=def-gowens
+#SBATCH --account=YOURACCOUNT
 #SBATCH --ntasks=10
 #SBATCH --mem-per-cpu=10G
 
@@ -8,19 +8,19 @@ genus=$1
 echo $genus
 
 #0 Give paths to the command and load modules
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin2/anchorwave/minimap2/
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin
-export PATH=$PATH:/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri
-export PATH=$PATH:/home/kaedeh/scratch/paired_genome_for_syri
+export PATH=$PATH:/PATH/TO/anchorwave/minimap2/
+export PATH=$PATH:/PATH/TO/bin
+export PATH=$PATH:/PATH/TO/bin/syri
+export PATH=$PATH:/PATH/TO/YOURDATA
 
 #1 Whole genome alignment round 1
 minimap2 -t 10 -ax asm5 --eqx ${genus}_genome/*refgenome_chr.fa ${genus}_genome/*qrygenome_chr.fa > ${genus}_genome/minimap2_ref_qrygenome_chr_alignment.sam
 
 #2 Run SyRI round 1
 module load scipy-stack
-source /home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/python_env/bin/activate
-PATH_TO_SYRI="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/syri"
-PATH_TO_PLOTSR="/home/kaedeh/projects/def-gowens/kaedeh/cranberry_genome/bin/syri/syri/bin/plotsr"
+source /PATH/TO/python_env/bin/activate
+PATH_TO_SYRI="/PATH/TO/bin/syri/syri/bin/syri"
+PATH_TO_PLOTSR="/PATH/TO/bin/syri/syri/bin/plotsr"
 
   python3 $PATH_TO_SYRI \
 -c ${genus}_genome/minimap2_ref_qrygenome_chr_alignment.sam \
