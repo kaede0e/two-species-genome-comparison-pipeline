@@ -1,6 +1,5 @@
 #CDS/TE counts in inversion/syntenic/inversion_breakpoints/random_4k region
 library(ggplot2)
-library(compiler)
 library(tidyverse)
 library(dplyr)
 
