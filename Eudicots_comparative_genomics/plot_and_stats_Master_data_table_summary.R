@@ -1,6 +1,7 @@
+#what parameter(s) affects the number of inversions? 
 library(tidyverse)
 
-# 
+#####Plotting#####
 Master_data_table_summary %>%
   left_join(., biological_info)%>%
   #filter(Evidence_of_hybridization == "weak")%>%
