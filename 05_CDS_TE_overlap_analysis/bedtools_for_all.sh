@@ -54,7 +54,7 @@ done
 bedtools random -n 19000 -l 4000 -g merged_syri_aligned_regions.bed | cut -f 1-3 | sort -k1,1 -k2,2n > bedtools_random_4k_aligned_regions.bed
 
 ##3 extract inversion breakpoints by R and bedtools intersect
-for genus in `cat invalid_genome_pair.txt`;
+for genus in `cat genome_pair.txt`;
 do
   #0. Convert breakpoints_regions.csv to .bed
   cat ${genus}_genome/breakpoints_regions_${genus}.csv | tail -n +2 | cut -f 3-5 -d "," | tr -d '"' | sed s/","/"\t"/g > ${genus}_genome/breakpoints_regions.bed
