@@ -4,7 +4,6 @@ library(tidyverse)
 library(dplyr)
 
 #####Plotting##### 
-#Make sure it's `nCDS(bp)` not single quote!! ''
 Master_bedtools_bpoverlap_merged_CDS <- read_csv("Master_bedtools_bpoverlap_CDS.csv")
 Master_bedtools_bpoverlap_merged_TE <- read_csv("Master_bedtools_bpoverlap_TE.csv")
 Master_bedtools_bpoverlap_breakpoints_merged_cds <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_cds.csv")
