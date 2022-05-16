@@ -75,3 +75,11 @@ inv_plot2 %>% # grouped by inversion region
   geom_histogram(aes(x=region_percent_ID), binwidth = 0.002) +
   facet_wrap("Genus", nrow = 5)
 ggsave("inversion_score_distribution_species_v1.pdf", width = 20, height = 16)
+
+syn_inv_plot <- rbind(syn_plot, inv_plot2)
+syn_inv_plot %>%
+  ggplot() +
+  geom_density(aes(x=region_percent_ID, fill=type, alpha=0.4)) +
+  facet_wrap("Genus", nrow = 5)
+ggsave("synteny_inversion_score_distribution_32species.pdf", width = 20, height = 16)
+
