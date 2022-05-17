@@ -41,10 +41,11 @@ done
 ##1 merge all aligned regions between the genome pair into full length (syri_aligned_regions.bed)
 for genus in `cat genome_pair.txt`;
 do
-  #remove unaligned ("NOTAL") regions, indels ("INS", "DEL") that are identified in syri.out
-  cat ${genus}_genome/SyRI_output_${genus}_genome/syri.out | grep -v "NOTAL" | grep -v "SNP" | grep -v "DEL" | grep -v "INS" > ${genus}_genome/SyRI_output_${genus}_genome/aligned_syri.out
+  #remove unaligned ("NOTAL") regions and inversions ("INV") that are identified in syri.out
+  cat ${genus}_genome/SyRI_output_${genus}_genome/syri.out | grep -v "NOTAL" | grep -v "INV" > ${genus}_genome/SyRI_output_${genus}_genome/aligned_syri.out
   cut -f 1-3 ${genus}_genome/SyRI_output_${genus}_genome/aligned_syri.out > ${genus}_genome/SyRI_output_${genus}_genome/syri_aligned_regions.bed
-  sort -k1,1 -k2,2n ${genus}_genome/SyRI_output_${genus}_genome/syri_aligned_regions.bed > ${genus}_genome/SyRI_output_${genus}_genome/sorted_syri_aligned_regions.bed
+  cat ${genus}_genome/SyRI_output_${genus}_genome/syri_aligned_regions.bed | awk '{if ($2 <= $3){print}}' > ${genus}_genome/SyRI_output_${genus}_genome/valid_syri_aligned_regions.bed
+  sort -k1,1 -k2,2n ${genus}_genome/SyRI_output_${genus}_genome/valid_syri_aligned_regions.bed > ${genus}_genome/SyRI_output_${genus}_genome/sorted_syri_aligned_regions.bed
   bedtools merge -i ${genus}_genome/SyRI_output_${genus}_genome/sorted_syri_aligned_regions.bed > ${genus}_genome/SyRI_output_${genus}_genome/merged_syri_aligned_regions.bed
   cp ${genus}_genome/SyRI_output_${genus}_genome/merged_syri_aligned_regions.bed /home/kaedeh/scratch/paired_genome_done_EDTA/${genus}_genome/
   rm */SyRI_output_*/sorted_syri_aligned_regions.bed */SyRI_output_*/syri_aligned_regions.bed */SyRI_output_*/aligned_syri.out
