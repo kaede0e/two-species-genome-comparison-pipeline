@@ -77,8 +77,7 @@ do
 done
 ######
 
-
-#3. Extract inversion breakpoints by R and perform overlap analysis using bedtools intersect
+## Extract inversion breakpoints by R (refer to extract_inv_breakpoints.R) and perform overlap analysis using bedtools intersect
 for genus in `cat genome_pair.txt`;
 do
   #0. Convert breakpoints_regions.csv to .bed
