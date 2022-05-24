@@ -65,7 +65,7 @@ done
 
 ##Option b: randomization using whole chromosome 
 #1. Prepare chromosome size file from .fai
-samtools faidx refgenome.fasta
+samtools faidx refgenome.fa
 #2. Randomly pick regions from chromosome file
 ##  -n adjust to 1000 x number of chromosomes
 for genus in `cat genome_pair.txt`;
