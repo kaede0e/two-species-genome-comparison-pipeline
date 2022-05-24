@@ -41,10 +41,10 @@ syn_plot <- Master_score_table %>%
   filter(type == "syn") %>%
   group_by(region_start_1, region_end_1, Genus) %>% 
   summarise(region_percent_ID = sum(normalized_percent_ID, na.rm = TRUE)/sum(length_1, na.rm = TRUE))
-syn_plot <- full_join(syn_plot, divergence, by = "Genus")
 divergence <- syn_plot %>% 
   group_by(Genus) %>%
   summarise(syn_divergence = mean(region_percent_ID))
+syn_plot <- full_join(syn_plot, divergence, by = "Genus")
 
 inv_plot2 <- Master_score_table %>%
   filter(type == "inv") %>%
