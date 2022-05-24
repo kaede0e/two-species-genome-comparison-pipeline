@@ -6,7 +6,7 @@ library(dplyr)
 ### Extract Inversion breakpoints from SyRI output ### 
 Master_score_table_updated_inv <- Master_score_table_updated %>%
   filter(type =="inv")%>%
-  filter(length_1 >= 5000) ## resulted in 0 inv from Vigna. 
+  filter(length_1 >= 5000)
 end_4k <- Master_score_table_updated_inv%>%
   transmute(Genus, chr_1,
             lower_2k = block_end_1 - 2000,
