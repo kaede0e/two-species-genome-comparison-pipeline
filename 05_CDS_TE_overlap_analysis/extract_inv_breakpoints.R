@@ -1,4 +1,5 @@
 library(tidyverse)
+library(dplyr)
 
 ### Extract Inversion breakpoints from SyRI output ### 
 Master_score_table_updated_inv <- Master_score_table_updated %>%
