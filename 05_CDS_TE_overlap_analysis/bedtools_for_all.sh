@@ -4,7 +4,7 @@ module load bedtools/2.30.0 #current version (Feb 16, 2022)
 ##For each feature defined in "A", how many features in "B" are overlapping? -c
 ##For each feature defined in "A", how many basepairs are overlapping? -wo
 
-#WARNING: 
+#NOTE: 
 #Merge CDS or TE features before doing bedtools intersect -wo so that there is no duplicates/isoforms that could lead to overrepresentation.
 
 #1) Comparison between inverted region vs. syntenic region
@@ -19,10 +19,10 @@ for genus in `cat genome_pair.txt`; #genome_pair.txt lists my parent directory (
 do
   sort -k1,1 -k2,2n ${genus}_genome/*_reduced_cds.bed > ${genus}_genome/sorted_genome_cds.bed
   bedtools merge -i ${genus}_genome/sorted_genome_cds.bed > ${genus}_genome/merged_cds.bed
-  #1. Inversion
+  #1. Inversion (CDS)
   bedtools intersect -a ${genus}_genome/inversion_regions.bed -b ${genus}_genome/*_reduced_cds.bed -c > ${genus}_genome/bedtools_count_cds_inv.txt
   bedtools intersect -a ${genus}_genome/inversion_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_inv.txt
-  #2. Syntenic region
+  #2. Syntenic region (CDS)
   bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/*_reduced_cds.bed -c > ${genus}_genome/bedtools_count_cds_syn.txt
   bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_syn.txt
 done
