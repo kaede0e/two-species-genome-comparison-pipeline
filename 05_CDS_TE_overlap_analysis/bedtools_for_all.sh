@@ -25,10 +25,7 @@ do
   #2. Syntenic region (CDS)
   bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/*_reduced_cds.bed -c > ${genus}_genome/bedtools_count_cds_syn.txt
   bedtools intersect -a ${genus}_genome/syntenic_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_syn.txt
-done
-
-for genus in `cat genome_pair.txt`;
-do
+  
   sort -k1,1 -k2,2n ${genus}_genome/All_chr_EDTA.TEanno.bed > ${genus}_genome/sorted_${genus}_TE.bed
   bedtools merge -i ${genus}_genome/sorted_${genus}_TE.bed > ${genus}_genome/merged_TE.bed
   #1. Inversion (TE)
