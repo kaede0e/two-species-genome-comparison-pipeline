@@ -166,7 +166,6 @@ Master_bedtools_count_TE = do.call(rbind, datalist_bedtools_count)
 
 
 #####Plotting##### 
-#Make sure it's `nCDS(bp)` not single quote!! ''
 Master_bedtools_bpoverlap_merged_CDS <- read_csv("Master_bedtools_bpoverlap_CDS_final.csv")
 Master_bedtools_bpoverlap_merged_TE <- read_csv("Master_bedtools_bpoverlap_TE_final.csv")
 
@@ -203,17 +202,3 @@ TE_proportion <- Master_bedtools_bpoverlap_merged_TE %>%
   geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))
 
 
-##### Testing using a linear model #####
-Master_bedtools_bpoverlap_merged_summary <- Master_bedtools_bpoverlap_merged %>%
-  mutate(region_length = region_end_1 - region_start_1)%>%
-  group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
-  summarise(
-    total_bpoverlap = sum(`nCDS(bp)`, na.rm = TRUE)
-  ) %>%
-  mutate(proportion_of_CDS_per_region = total_bpoverlap/region_length) %>%
-  filter(Genus == "Salvia")
-
-linear_model <- lm(proportion_of_CDS_per_region ~  type,
-                   data= Master_bedtools_bpoverlap_merged_summary)
-
-summary(linear_model)
