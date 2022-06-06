@@ -39,8 +39,8 @@ done
 
 
 #2) Comparison between inversion breakpoint regions vs. randomized regions in the reference genome 
-######
 ##Create a randomized regions file
+---------------------------------------
 ##Option a: randomization using SyRI output
 #1. Merge all aligned regions identified by SyRI between the genome pair into full length (syri_aligned_regions.bed)
 for genus in `cat genome_pair.txt`;
@@ -74,7 +74,7 @@ do
   cat ${genus}_genome/chr_size.txt | tr ' ' '  ' > ${genus}_genome/input_chr.txt
   bedtools random -n `cat ${genus}_genome/n.txt`000 -l 4000 -g ${genus}_genome/input_chr.txt | cut -f 1-3 | sort -k1,1 -k2,2n > ${genus}_genome/bedtools_random_4k_regions.bed
 done
-######
+----------------------------
 
 ## Extract inversion breakpoints by R (refer to extract_inv_breakpoints.R) and perform overlap analysis using bedtools intersect
 for genus in `cat genome_pair.txt`;
