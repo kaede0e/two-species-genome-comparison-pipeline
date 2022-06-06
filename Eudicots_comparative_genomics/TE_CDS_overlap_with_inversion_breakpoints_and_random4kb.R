@@ -6,32 +6,6 @@ library(dplyr)
 getwd()
 setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
-#Data Import function
-## Define directory with your data formatted as directory/genera/
-genera <- c("Acer", "Actinidia")
-
-#Extract inversion breakpoint regions 
-Master_score_table_updated_inv <- Master_score_table_updated %>%
-  filter(type =="inv")%>%
-  mutate(region_length = region_end_1 - region_start_1)%>%
-  filter(region_length >= 5000)%>%
-  select(Genus, chr_1, region_start_1, region_end_1)%>%
-  distinct()
-end_4k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            lower_2k = region_end_1 - 2000,
-            upper_2k = region_end_1 + 2000)
-start_4k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            lower_2k = region_start_1 - 2000,
-            upper_2k = region_start_1 + 2000)
-breakpoints_regions <- rbind(end_4k, start_4k)
-for (genus in genera){
-  breakpoints_regions %>%
-    filter(Genus == genus) %>%
-    write.csv(., paste0('breakpoints_regions_', genus, '.csv'))
-}
-
 #Data Import function 
 datalist_bedtools_bpoverlap = list()
 datalist_bedtools_count = list()
@@ -124,8 +98,9 @@ for (genus in genera){
 Master_bedtools_bpoverlap_breakpoints_merged_CDS = do.call(rbind, datalist_bedtools_bpoverlap)
 Master_bedtools_count_breakpoints_CDS = do.call(rbind, datalist_bedtools_count)
 
+
 ##### TE #####
-# we are looking for the proportion of TE covering the genome (relevant for bedtools intersect -wo)
+# we are looking for the proportion of TE covering the genome (relevant for bedtools intersect -wo) you can ignore count (-c)
 #Overlap with inv breakpoints vs. random 4kbp regions on the reference genome
 for (genus in genera){
   ## for inversion breakpoints data
@@ -256,26 +231,4 @@ TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
 joined_proportion <- left_join(CDS_proportion, TE_proportion)
 joined_proportion2 <- left_join(CDS_proportion2, TE_proportion2)
 Master_bedtools_bpoverlap_summary <- rbind(joined_proportion, joined_proportion2) 
-
-
-#####################
-## troubleshooting ##
-
-Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
-  mutate(region_length = region_end_1 - region_start_1)%>%
-  distinct()%>%
-  group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
-  summarise(
-    total_bpoverlap = sum(`nTE(bp)`, na.rm = TRUE)
-  )%>%
-  filter(Genus == "Ipomoea")%>%
-  filter(type != "alignable_random_4k")%>%
-  group_by(Genus, type, chr_1)%>%
-  summarise(
-    proportion_of_TE_per_region = sum(total_bpoverlap)/sum(region_length)
-  )%>%
-  ggplot()+
-  geom_point(aes(x = type, y = proportion_of_TE_per_region, colour = type))+
-  geom_line(aes(x = type, y = proportion_of_TE_per_region, group = chr_1))
-geom_boxplot(aes(x=type, y=proportion_of_TE_per_region, colour = type))
 
