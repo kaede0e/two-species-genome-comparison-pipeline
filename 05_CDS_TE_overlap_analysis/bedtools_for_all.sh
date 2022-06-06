@@ -6,6 +6,7 @@ module load bedtools/2.30.0 #current version (Feb 16, 2022)
 
 #NOTE: 
 #Merge CDS or TE features before doing bedtools intersect -wo so that there is no duplicates/isoforms that could lead to overrepresentation.
+#bedtools intersect -wo does not output 0 bp overlap regions. 
 
 #1) Comparison between inverted region vs. syntenic region
 ## Make bed file out of inversion/syntenic table for each genus
@@ -37,8 +38,9 @@ do
 done
 
 
-#2) Comparison between inversion breakpoints vs. randomized regions in the reference genome 
-### Create a randomized regions file ###
+#2) Comparison between inversion breakpoint regions vs. randomized regions in the reference genome 
+######
+##Create a randomized regions file
 ##Option a: randomization using SyRI output
 #1. Merge all aligned regions identified by SyRI between the genome pair into full length (syri_aligned_regions.bed)
 for genus in `cat genome_pair.txt`;
@@ -95,3 +97,39 @@ do
   bedtools intersect -a ${genus}_genome/bedtools_random_4k_regions.bed -b ${genus}_genome/sorted_genome_cds.bed -c > ${genus}_genome/bedtools_count_cds_random_4k_wholechr.txt
   bedtools intersect -a ${genus}_genome/bedtools_random_4k_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_random_4k_wholechr.txt
 done
+
+#3) Comparison between breakpoints vs. random points in the genome for frequency of containing a gene
+## Extract breakpoints coordinates in .bed format
+for genus in `cat genome_pair.txt`;
+do
+  cat ${genus}_genome/inversion_regions.bed | cut -f -2 > ${genus}_genome/inversion_start_regions.txt
+  cat ${genus}_genome/inversion_regions.bed | awk '{print $1,$3}' | tr ' ' '      ' > ${genus}_genome/inversion_end_regions.txt
+  cat ${genus}_genome/inversion_start_regions.txt ${genus}_genome/inversion_end_regions.txt >> ${genus}_genome/inversion_breakpoints.txt
+  awk '{print $0,$NF}' ${genus}_genome/inversion_breakpoints.txt | tr ' ' '       ' > ${genus}_genome/inversion_breakpoints.bed
+done
+
+## Use bedtools intersect -c (count) to see if breakpoints overlaps with any genes
+for genus in `cat genome_pair.txt`;
+do
+  cat ${genus}_genome/*genes.bed | cut -f 1-3 | sort -k1,1 -k2,2n > ${genus}_genome/sorted_genes.bed
+  bedtools merge -i ${genus}_genome/sorted_genes.bed > ${genus}_genome/merged_genes.bed
+  bedtools intersect -a ${genus}_genome/inversion_breakpoints.bed -b ${genus}_genome/merged_genes.bed -c > ${genus}_genome/bedtools_count_gene_at_breakpoints.txt
+done
+
+## To have a comparison to the above stats, extract random points from the genome within aligned regions
+## Extract random point coordinates in .bed format
+for genus in `cat genome_pair.txt`;
+do
+  cat ${genus}_genome/bedtools_random_4k_aligned_regions.bed | cut -f -2 > ${genus}_genome/random_aligned_start_regions.txt
+  cat ${genus}_genome/bedtools_random_4k_aligned_regions.bed | awk '{print $1,$3}' | tr ' ' '      ' > ${genus}_genome/random_aligned_end_regions.txt
+  cat ${genus}_genome/random_aligned_start_regions.txt ${genus}_genome/random_aligned_end_regions.txt >> ${genus}_genome/random_aligned_points.txt
+  awk '{print $0,$NF}' ${genus}_genome/random_aligned_points.txt | tr ' ' '        ' > ${genus}_genome/random_aligned_points.bed
+done
+
+## Use bedtools intersect -c (count) to see if random points overlap with any genes
+for genus in `cat genome_pair.txt`;
+do
+  bedtools intersect -a ${genus}_genome/random_aligned_points.bed -b ${genus}_genome/merged_genes.bed -c > ${genus}_genome/bedtools_count_gene_at_random_points.txt
+done
+
+
