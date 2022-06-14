@@ -10,8 +10,43 @@ Master_bedtools_bpoverlap_breakpoints_merged_cds <- read_csv("Master_bedtools_bp
 Master_bedtools_bpoverlap_breakpoints_merged_TE <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_TE.csv")
 
 CDS_proportion <- Master_bedtools_bpoverlap_merged_CDS %>%
+  distinct() %>% 
   mutate(region_length = region_end_1 - region_start_1)%>%
-  group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
+  group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
+  summarise(
+    total_bpoverlap = sum(`nCDS(bp)`, na.rm = TRUE)
+  )%>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  group_by(Genus, type)%>%
+  summarise(
+    proportion_of_CDS_per_region = sum(total_bpoverlap)/sum(region_length)
+  )%>%
+  ggplot()+
+  geom_point(aes(x = type, y = proportion_of_CDS_per_region, colour = type))+
+  geom_line(aes(x = type, y = proportion_of_CDS_per_region, group = Genus))
+
+TE_proportion <- Master_bedtools_bpoverlap_merged_TE %>%
+  distinct() %>%
+  mutate(region_length = region_end_1 - region_start_1)%>%
+  group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
+  summarise(
+    total_bpoverlap = sum(`nTE(bp)`, na.rm = TRUE)
+  )%>%
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  group_by(Genus, type)%>%
+  summarise(
+    proportion_of_TE_per_region = sum(total_bpoverlap)/sum(region_length)
+  )%>%
+  ggplot()+
+  geom_point(aes(x = type, y = proportion_of_TE_per_region, colour = type))+
+  geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))
+
+CDS_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_CDS %>%
+  distinct() %>% 
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(type != "alignable_random_4k") %>%
+  mutate(region_length = region_end_1 - region_start_1)%>%
+  group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
   summarise(
     total_bpoverlap = sum(`nCDS(bp)`, na.rm = TRUE)
   )%>%
@@ -23,9 +58,15 @@ CDS_proportion <- Master_bedtools_bpoverlap_merged_CDS %>%
   geom_point(aes(x = type, y = proportion_of_CDS_per_region, colour = type))+
   geom_line(aes(x = type, y = proportion_of_CDS_per_region, group = Genus))
 
-TE_proportion <- Master_bedtools_bpoverlap_merged_TE %>%
+TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
+  distinct() %>% 
+  mutate_all(~replace(., is.na(.), 0)) %>%
+  filter(type != "alignable_random_4k") %>%
+  filter(Genus != "Vaccinium") %>% #their random TE proportions were not in agreement with the genomic TE content
+  filter(Genus != "Medicago") %>%
+  filter(Genus != "Quercus") %>%
   mutate(region_length = region_end_1 - region_start_1)%>%
-  group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
+  group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
   summarise(
     total_bpoverlap = sum(`nTE(bp)`, na.rm = TRUE)
   )%>%
@@ -36,30 +77,6 @@ TE_proportion <- Master_bedtools_bpoverlap_merged_TE %>%
   ggplot()+
   geom_point(aes(x = type, y = proportion_of_TE_per_region, colour = type))+
   geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))
-
-CDS_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_cds %>%
-  group_by(Genus, type)%>%
-  summarise(proportion_of_CDS_per_region = sum(`nCDS(bp)`)/sum(region_length))%>%
-  #filter(proportion_of_CDSs <= 0.3)%>% # Arachis was outlier
-  ggplot()+
-  #geom_point(aes(x = type, y = proportion_of_CDS_per_region, colour = type))+
-  #geom_line(aes(x = type, y = proportion_of_CDS_per_region, group = Genus))
-  geom_boxplot(aes(x=type, y=proportion_of_CDS_per_region, colour = type))
-
-TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
-  mutate(region_length = region_end_1 - region_start_1)%>%
-  group_by(region_start_1, region_end_1, region_length, type, Genus)%>%
-  summarise(
-    total_bpoverlap = sum(`nTE(bp)`, na.rm = TRUE)
-  )%>%
-  group_by(Genus, type)%>%
-  summarise(
-    proportion_of_TE_per_region = sum(total_bpoverlap)/sum(region_length)
-  )%>%
-  ggplot()+
-  #geom_point(aes(x = type, y = proportion_of_TE_per_region, colour = type))+
-  #geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))
-  geom_boxplot(aes(x=type, y=proportion_of_TE_per_region, colour = type))
 
 # combined summary dataframe: 
 joined_proportion <- left_join(CDS_proportion, TE_proportion)
