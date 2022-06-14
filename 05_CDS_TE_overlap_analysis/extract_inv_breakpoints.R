@@ -7,12 +7,12 @@ Master_score_table_updated_inv <- Master_score_table_updated %>%
   filter(length_1 >= 5000)
 end_4k <- Master_score_table_updated_inv%>%
   transmute(Genus, chr_1,
-            lower_2k = block_end_1 - 2000,
-            upper_2k = block_end_1 + 2000)
+            lower_end = region_end_1, 
+            upper_end = region_end_1 + 4000)
 start_4k <- Master_score_table_updated_inv%>%
   transmute(Genus, chr_1,
-            lower_2k = block_start_1 - 2000,
-            upper_2k = block_start_1 + 2000)
+            lower_end = region_start_1 -4000, 
+            upper_end = region_start_1)
 breakpoints_regions <- rbind(end_4k, start_4k)
 for (genus in genera){
   breakpoints_regions %>%
