@@ -105,3 +105,34 @@ Master_data_table_summary %>%
   ggplot()+
   geom_boxplot(aes(x=`Self-compatibility`, y=total_inv_regions_number))+ ylab("Number of inversions ≥1000bp")
 
+#S3a) Genome length vs TE length 
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(TE_proportion = total_TE_length/Genome_length) %>% 
+  ggplot()+ geom_point(aes(x=Genome_length, y=total_TE_length)) +geom_smooth(aes(x=Genome_length, y=total_TE_length), method = "lm")
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(TE_proportion = total_TE_length/Genome_length) %>%
+  aov(total_inv_regions_number ~ total_TE_length, 
+      data = .) %>%
+  summary()
+
+#S3b) Genome length vs genomic TE proportion
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(TE_proportion = total_TE_length/Genome_length) %>% 
+  ggplot()+ geom_point(aes(x=Genome_length, y=TE_proportion)) +geom_smooth(aes(x=Genome_length, y=TE_proportion), method = "lm")
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(TE_proportion = total_TE_length/Genome_length) %>%
+  aov(total_inv_regions_number ~ TE_proportion, 
+      data = .) %>%
+  summary()
+
+#S3c) genomic TE content by genus 
+genomic_TE_proportion <- Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(genomic_TE_proportion = total_TE_length / Genome_length)%>%
+  ggplot(., aes(x=reorder(Genus,-genomic_TE_proportion), y=genomic_TE_proportion))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + xlab("Genus")
