@@ -27,6 +27,39 @@ Master_data_table_summary %>%
     data = .) %>%
   summary()
 
+#Figures
+#1) Density of sequence identity score inside inverted region (blue) vs. syntenic region (red) for 32 species pair. 
+syn_inv_plot %>%
+  ggplot() +
+  geom_density(aes(x=region_percent_ID, fill=type, alpha=0.4)) +
+  scale_fill_manual(values = pnw_palette("Bay",2)) +
+  facet_wrap("Genus", nrow = 5)
+
+#2) Number of inversions plotted against
+#2a) sequence divergence
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>% 
+  ggplot()+ 
+  geom_point(aes(x=percent_divergence, y=total_inv_regions_number))+
+  geom_smooth(aes(x=percent_divergence, y=total_inv_regions_number), method = "lm")
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ percent_divergence, 
+      data = .) %>%
+  summary() #Does the number of inversion depend on species divergence computed from sequence identity? 
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ percent_divergence *
+        Evidence_of_hybridization, 
+      data = .) %>%
+  summary()
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ percent_divergence *
+        `Self-compatibility`, 
+      data = .) %>%
+  summary() #Is there an interacting effect from evidence of hybridization or self-compatibility to the number of inversions?
+
 #Supplementary Figures 
 #S1a) Distribution of syntenic regions identified by SyRI with respect to its sequence identity 
 syn_plot %>%
