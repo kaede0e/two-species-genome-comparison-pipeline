@@ -17,7 +17,7 @@ Master_data_table_summary %>%
   filter(ref_or_qry == "ref") %>% 
   ggplot()+ 
   geom_point(aes(x=percent_divergence, y=total_inv_regions_number))+
-  geom_smooth(aes(x=percent_divergence, y=total_inv_regions_number), method = "lm")
+  geom_smooth(aes(x=percent_divergence, y=total_inv_regions_number), method = "lm") #change the x variables accordingly for 2b) and 2c)
 Master_data_table_summary %>%
   filter(ref_or_qry == "ref") %>%
   aov(total_inv_regions_number ~ percent_divergence, 
@@ -35,6 +35,19 @@ Master_data_table_summary %>%
         `Self-compatibility`, 
       data = .) %>%
   summary() #Is there an interacting effect from evidence of hybridization or self-compatibility to the number of inversions?
+#2b) genome length 
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ Genome_length, 
+      data = .) %>%
+  summary()
+#2c) TE content 
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(TE_proportion = total_TE_length/Genome_length) %>%
+  aov(total_inv_regions_number ~ TE_proportion, 
+      data = .) %>%
+  summary()
 
 #Supplementary Figures 
 #S1a) Distribution of syntenic regions identified by SyRI with respect to its sequence identity 
