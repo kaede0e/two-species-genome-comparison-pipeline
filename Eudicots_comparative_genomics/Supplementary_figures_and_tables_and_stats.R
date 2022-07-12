@@ -1,6 +1,6 @@
 library(dplyr)
 library(tidyverse)
-library(ggplot)
+library(ggplot2)
 
 #Supplementary Figures with codes for plots
 #S1a) Distribution of syntenic regions identified by SyRI with respect to its sequence identity 
