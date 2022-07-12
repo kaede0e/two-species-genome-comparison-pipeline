@@ -9,56 +9,41 @@ syn_inv_plot %>%
                                                             #if the above F-stat shows null - same distribution for both types, which was only true for a handful of species pair
 
 #Figure 2: Null model for number of inversions
-Master_data_table_summary <- read_csv("Master_data_table_summary.csv")
+Master_data_table_summary <- read_csv("Master_data_table_summary_all_genomes_updated.csv")
 Master_data_table_summary %>%
-  left_join(., biological_info)%>%
-  mutate(TE_proportion = total_TE_length/Genome_length) %>%
-  aov(number_of_inversion_regions ~ TE_proportion *
-        `Self-compatibility`,
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ percent_divergence *
+        `Self-compatibility`, 
       data = .) %>%
   summary()
 
 Master_data_table_summary %>%
-  left_join(., biological_info)%>%
-  filter(!is.na(`Self-compatibility`)) %>%
-  ggplot()+
-  geom_boxplot(aes(x=`Self-compatibility`, y=number_of_inversion_regions))
-
-Master_data_table_summary %>%
-  left_join(., biological_info)%>%
-  filter(!is.na(Evidence_of_hybridization)) %>%
-  ggplot()+
-  geom_boxplot(aes(x=Evidence_of_hybridization, y=number_of_inversion_regions))
-
-Master_data_table_summary %>%
-  left_join(., biological_info)%>%
-  #filter(Evidence_of_hybridization == "weak")%>%
-  mutate(TE_proportion = total_TE_length/Genome_length) %>%
-  ggplot(.,aes(x=percent_divergence, y=number_of_inversion_regions)) +
-  geom_point(colour = '#00BFC4') + 
-  geom_smooth(method="lm", colour = '#00BFC4')
-
-Master_data_table_summary %>%
-  left_join(., biological_info)%>%
-  #filter(`Self-compatibility`=="mixed")%>%
-  aov(number_of_inversion_regions ~ percent_divergence +
-        `Self-compatibility`, 
-      data= .) %>%
-  summary()
-
-Master_data_table_summary %>%
-  left_join(., biological_info)%>%
+  filter(ref_or_qry == "ref") %>%
   filter(`Self-compatibility`!="mixed")%>%
-  aov(number_of_inversion_regions ~ `Self-compatibility`, 
+  aov(total_inv_regions_number ~ `Self-compatibility`, 
       data= .) %>%
   summary()
 
 Master_data_table_summary %>%
-  left_join(., biological_info)%>%
+  filter(ref_or_qry == "ref") %>%
+  aov(total_inv_regions_number ~ Genome_length, 
+      data = .) %>%
+  summary()
+
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
   mutate(TE_proportion = total_TE_length/Genome_length) %>%
-  aov(inv_region_length ~ syn_divergence + 
-        TE_proportion + Genome_length, 
-    data = .) %>%
+  aov(total_inv_regions_number ~ TE_proportion, 
+      data = .) %>%
+  summary()
+
+plot_chr_length %>% 
+  aov(chr_length ~ total_inv_regions_number, 
+      data = .) %>% 
+  summary()
+plot_chr_length %>% 
+  lm(total_inv_regions_number ~ chr_length, 
+     data=.)%>% 
   summary()
 
 #Figure 3: TE proportion / TE length increases with genome size
