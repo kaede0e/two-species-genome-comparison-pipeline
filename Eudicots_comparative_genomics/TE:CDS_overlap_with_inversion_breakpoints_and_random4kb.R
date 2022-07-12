@@ -17,34 +17,6 @@ genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
             "Salix", "Salvia", "Solanum", 
             "Vaccinium", "Vigna", "Vitis")
 
-#Extract inversion breakpoint regions 
-Master_score_table_updated_inv <- Master_score_table_updated %>%
-  filter(type =="inv")%>%
-  mutate(region_length = region_end_1 - region_start_1)%>%
-  filter(region_length >= 5000)%>%
-  select(Genus, chr_1, region_start_1, region_end_1)%>%
-  distinct()
-end_10k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            #lower_2k = region_end_1,
-            #upper_2k = region_end_1 + 4000, 
-            lower_end = region_end_1, 
-            upper_end = region_end_1 + 10000)
-start_10k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            #lower_2k = region_start_1 - 4000,
-            #upper_2k = region_start_1,
-            lower_end = region_start_1 -10000, 
-            upper_end = region_start_1)
-breakpoints_regions_onesided <- rbind(end_4k, start_4k)
-breakpoints_regions_onesided_10k <- rbind(end_10k, start_10k)
-for (genus in genera){
-  breakpoints_regions_onesided_10k %>%
-    filter(Genus == genus) %>%
-    write.csv(., paste0('breakpoints_regions_onesided_10k_', genus, '.csv'))
-}
-
-#Data Import function 
 datalist_bedtools_bpoverlap = list()
 datalist_bedtools_count = list()
 
