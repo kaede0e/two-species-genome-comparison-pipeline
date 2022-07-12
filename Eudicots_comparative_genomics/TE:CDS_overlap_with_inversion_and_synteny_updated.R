@@ -81,9 +81,8 @@ for (genus in genera){
 Master_bedtools_bpoverlap_merged_CDS = do.call(rbind, datalist_bedtools_bpoverlap)
 Master_bedtools_count_CDS = do.call(rbind, datalist_bedtools_count)
 
-
-
 ##### TE #####
+
 datalist <- list()
 for (genus in genera){
   ## for raw TE merged if duplicates
@@ -204,12 +203,5 @@ TE_proportion <- Master_bedtools_bpoverlap_merged_TE %>%
   geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))+
   scale_color_manual(values = pnw_palette("Bay",2))
 
-##### Testing using a linear model #####
-linear_model <- 
-  Master_data_table_summary %>% 
-  mutate(TE_proportion = total_TE_length/Genome_length) %>%
-  lm(TE_proportion ~  Genome_length,
-                   data=.)
-summary(linear_model)
 
 
