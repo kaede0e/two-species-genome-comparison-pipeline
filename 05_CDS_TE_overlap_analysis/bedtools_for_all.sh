@@ -98,7 +98,7 @@ do
   bedtools intersect -a ${genus}_genome/bedtools_random_4k_regions.bed -b ${genus}_genome/merged_cds.bed -wo > ${genus}_genome/bedtools_bpoverlap_merged_cds_random_4k_wholechr.txt
 done
 
-#3) Comparison between breakpoints vs. random points in the genome for frequency of containing a gene
+#3) Comparison between breakpoints vs. random points in the genome for determining how many inversions may disrupt a gene
 ## Extract breakpoints coordinates in .bed format
 for genus in `cat genome_pair.txt`;
 do
