@@ -3,8 +3,6 @@ library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
 #Data Import function
 ## Define directory with your data formatted as directory/genera/
@@ -15,7 +13,7 @@ genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
             "Phaseolus", "Populus", "Prunus", "Pyrus", 
             "Quercus", "Rhododendron", "Rosa", "Rubus", 
             "Salix", "Salvia", "Solanum", 
-            "Vaccinium", "Vigna", "Vitis") #actually 26 species pair had blast hit
+            "Vaccinium", "Vigna", "Vitis") #26 species pair had blast hit
 empty_blast_output <- c("Actinidia", "Cucumis", "Eukalyptus", "Rubus")
 
 #Data Import function 
