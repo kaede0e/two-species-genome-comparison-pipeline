@@ -1,0 +1,65 @@
+Genus,Species,Short-read,Long-read,Assembler,Physical_mapping,Evidence_of_hybridization,Self-compatibility,Genome_length,Genome_length_category,total_length_of_genome_aligned,syn_region_length,inv_region_length,TL_length,dup_length,ref_or_qry,percent_genome_divergence,number_of_inversions,total_TE_length,total_CDS_length
+Acer,yangbiense,Illumina_HiSeq,PB,Canu,Y,weak,mixed,527532536,medium,107568566,161861663,81524741,7001635,8973995,qry,4.868036269,226,NA,
+Acer,truncatum,Illumina_HiSeq,PB,Falcon,Y,weak,mixed,512876774,medium,107568566,178344954,69300922,7022938,2111624,ref,4.868036269,226,256452058,31531284
+Actinidia,chinensis,Illumina_HiSeq,PB,"Canu, Falcon",Y,strong,self-incompatible,583182416,medium,118813091,373235683,65697362,12070791,2099719,ref,4.487412328,374,121894976,41590464
+Actinidia,eriantha,Illumina_HiSeq,PB,"Canu, Pilon",Y,strong,self-incompatible,634665038,medium,118813091,370762738,60215800,12151392,4804892,qry,4.487412328,374,NA,
+Arabis,alpina,NA,PB,"Falcon, Arrow, Pilon",Y,strong,mixed,311642060,small,50867045,156943452,31576113,15705285,3458063,ref,4.309732325,94,146855233,35301340
+Arabis,montbretiana,Illumina_HiSeq,NA,ALLPATHS,N,strong,mixed,232183262,small,50867045,124543229,22524164,14941383,2629281,qry,4.309732325,94,NA,
+Arachis,duranensis,Illumina_HiSeq,PB,"Canu, Arrow, Ragtag",N,strong,selfing,1030868929,large,678524238,645078536,173653864,118883286,53960348,ref,2.465949119,116,516352587,104333469
+Arachis,ipaensis,Illumina_HiSeq,NA,SOAPdenovo,N,strong,selfing,1086478441,large,678524238,651104196,208379619,120904949,63511271,qry,2.465949119,116,NA,
+Citrus,sinensis,Roche454,NA,SOAPdenovo,N,strong,selfing,238999708,small,65970316,98688924,39246229,24712676,4615001,ref,4.510836787,88,62346591,33241218
+Citrus,trifoliata,NA,PB,Falcon,N,strong,selfing,230942682,small,65970316,89741796,42657538,24038813,6408708,qry,4.510836787,88,NA,
+Corylus,heterophylla,Illumina_HiSeq,ONT,Canu,Y,strong,mixed,337376756,small,198976161,234315748,19573302,18669127,3924184,ref,3.896478018,511,82448335,33751367
+Corylus,avellana,Illumina_HiSeq,ONT,MaSuRCA,Y,strong,self-incompatible,369779253,small,198976161,225995041,20972354,18404330,23252398,qry,3.896478018,511,NA,
+Corymbia,citriodora,Illumina_HiSeq,PB,Arachne,N,strong,mixed,412616704,medium,109267645,59441688,131410429,109993023,49791165,ref,3.451017088,258,84209126,44291432
+Corymbia,maculata,NA,ONT,Canu,N,strong,mixed,403403597,medium,109267645,58581733,145625632,116270431,40619253,qry,3.451017088,258,NA,
+Cucumis,melo,NA,PB,"Falcon, Arrow, Pilon",Y,weak,self-incompatible,359413553,small,20205598,175161993,75666421,4053619,495939,ref,4.480153965,131,135914660,27459425
+Cucumis,metuliferus,Illumina_HiSeq,PB,"Canu, Pilon",Y,weak,mixed,316836976,small,20205598,153414734,71018696,4086043,178784,qry,4.480153965,131,NA,
+Eukalyptus,grandis,Sanger,ONT,Canu,N,weak,mixed,612466787,medium,207948632,279459670,8106369,89973891,13918247,ref,4.001469044,104,212926706,44022549
+Eukalyptus,globulus,NA,ONT,Canu,N,weak,mixed,541101446,medium,207948632,262483822,7806733,91162131,35736796,qry,4.001469044,104,NA,
+Fragaria,vesca,Roche454,NA,Celera,N,strong,selfing,198117109,small,38877178,43802913,74077725,21391322,12345654,ref,4.585522979,65,33465641,32410410
+Fragaria,iinumae,NA,PB,Falcon,N,strong,selfing,239101811,small,38877178,42885084,105403461,21755734,12561036,qry,4.585522979,65,NA,
+Glycine,max,Sanger,PB,Arachne,Y,strong,selfing,961401624,large,724575960,761635016,22335867,38058567,4124006,ref,2.452451831,124,377294127,61238474
+Glycine,soja,Illumina_HiSeq,PB,MECAT,Y,strong,mixed,969795186,large,724575960,756244307,23401117,38349014,24359349,qry,2.452451831,124,NA,
+Gossypium,anomalum,Illumina_HiSeq,PB,Canu,Y,strong,selfing,1191544265,large,132586688,276045226,347858357,12878424,34334066,qry,4.372115349,207,NA,
+Gossypium,herbaceum,Illumina_HiSeq,PB,"Falcon, Pilon",Y,strong,selfing,1488478742,large,132586688,329411712,439055843,12892938,10697049,ref,4.372115349,207,1045262711,50979400
+Ipomoea,nil,Illumina_HiSeq,PB,SOAPdenovo,N,strong,selfing,671723000,medium,14760047,118311853,150529153,12040662,985607,ref,5.084823383,157,356229725,49668309
+Ipomoea,trifida,Illumina_HiSeq,PB,Platanus,N,strong,self-incompatible,400438795,medium,14760047,82146911,58731222,11879148,2782083,qry,5.084823383,157,NA,
+Juglans,mandshurica,Illumina_HiSeq,ONT,Canu,Y,strong,self-incompatible,527906659,medium,102143130,254963387,19738944,19932586,17860602,qry,4.692500372,134,NA,
+Juglans,regia,Illumina_HiSeq,ONT,MaSuRCA,N,strong,mixed,545778456,medium,102143130,267442131,18506995,19896854,3853006,ref,4.692500372,134,185946849,41695487
+Luffa,acutangula,Illumina_HiSeq,PB,Canu,Y,strong,mixed,526982958,medium,68311826,124138215,48304428,23722975,81122240,qry,4.48396833,355,NA,
+Luffa,aegyptiaca (=cylindrica),NA,PB,Falcon,N,strong,mixed,543850172,medium,68311826,131001875,53587091,23706604,10809597,ref,4.48396833,355,NA,
+Malus,sieversii,"Illumina_HiSeq, 10X_Genomics",PB,"DeNovoMAGIC3, Hifiasm, HiCanu",N,strong,self-incompatible,653219308,medium,257548362,339245670,18867842,39280691,12639858,ref,4.018743822,220,306637091,56018148
+Malus,sylvestris,"Illumina_HiSeq, 10X_Genomics",PB,"DeNovoMAGIC3, Hifiasm, HiCanu",N,strong,self-incompatible,639363152,medium,257548362,314850283,18306571,39055826,44279298,qry,4.018743822,220,NA,
+Medicago,truncatula,NA,PB,"Canu, Falcon",N,weak,mixed,426015544,medium,20573981,146497501,157464808,7262508,5113642,qry,4.80917053,184,NA,
+Medicago,ruthenica,"Illumina_HiSeq, 10X_Genomics",PB,Falcon,Y,weak,mixed,825324265,large,20573981,242233676,87504308,7165620,843101,ref,4.80917053,184,109587784,43726785
+Phaseolus,vulgaris,"Roche454, Illumina_HiSeq, Sanger",NA,Arachne,N,strong,mixed,514820528,medium,58617082,243051454,77027451,4943550,3446267,ref,4.835341817,157,160121480,34663348
+Phaseolus,lunatus,"Illumina_HiSeq, 10X_Genomics",PB,Canu,N,strong,selfing,516790610,medium,58617082,210687424,98651256,4924752,5853908,qry,4.835341817,157,NA,
+Populus,trichocarpa,"Sanger, Illumina_HiSeq",NA,Arachne,N,weak,self-incompatible,394507731,small,94907137,267229751,20307779,3507970,1277140,ref,4.68370901,194,68242048,44421243
+Populus,tomentosa,Illumina_HiSeq,PB,"Canu, Arrow",Y,weak,self-incompatible,336656027,small,94907137,239537938,14652295,3511420,6928899,qry,4.68370901,194,NA,
+Prunus,dulcis Texas,Illumina_HiSeq,ONT,MaSuRCA,N,weak,self-incompatible,208184296,small,68204318,133707256,8611906,6113906,1474734,ref,4.67427008,148,43342767,33014952
+Prunus,armeniaca Stella,Illumina_HiSeq,PB,Falcon,N,weak,self-incompatible,209056965,small,68204318,121768113,9137285,6060537,4927564,qry,4.67427008,148,NA,
+Pyrus,pyrifolia,NA,PB,"Falcon, Arrow",N,strong,self-incompatible,481431185,medium,212533280,256312321,28258553,45581713,35052931,qry,4.059472059,125,NA,
+Pyrus,betulifolia,Illumina_HiSeq,PB,"Canu, Falcon",Y,strong,self-incompatible,500621408,medium,212533280,267592826,33701652,47431620,12345336,ref,4.059472059,125,161118586,77715673
+Quercus,lobata,Illumina_HiSeq,PB,MaSuRCA,N,weak,self-incompatible,812740008,large,154367946,145245896,172607222,192458444,70274466,qry,4.51223527,313,NA,
+Quercus,robur,"Roche454, Illumina_HiSeq, Sanger",NA,"Newbler, Celera",N,weak,self-incompatible,716731785,medium,154367946,138300183,188497995,190071735,59289672,ref,4.51223527,313,312060565,48402223
+Raphanus,raphanistrum,Illumina_HiSeq,PB,MECAT,N,strong,self-incompatible,408184114,medium,104672259,153945472,20384623,56591183,47601582,qry,3.872675247,168,NA,
+Raphanus,sativus,Illumina_HiSeq,PB,Canu,N,strong,self-incompatible,446389287,medium,104672259,168320805,23284700,55808702,14084352,ref,3.872675247,168,NA,
+Rhododendron,williamsianum,Illumina_HiSeq,NA,ALLPATHS,Y,weak,self-incompatible,368555047,small,59856284,176865732,48228240,17633448,3285431,ref,5.157260683,320,40932716,29093172
+Rhododendron,ovatum,Illumina_HiSeq,PB,"Falcon, Arrow, Pilon",Y,weak,mixed,544493535,medium,59856284,182992372,71965114,17593059,8075541,qry,5.157260683,320,NA,
+Rosa,rugosa,10X_Genomics,PB,HiCanu,Y,strong,self-incompatible,394048573,small,78310037,114999349,55862867,22618112,6644713,ref,4.698482861,156,161488919,51996878
+Rosa,chinensis,Illumina_HiSeq,PB,"Canu, Pilon",N,strong,self-incompatible,466111103,medium,78310037,106048411,66282610,22504192,41374950,qry,4.698482861,156,NA,
+Rubus,chingii Hu,Illumina_HiSeq,ONT,"Newbler, Pilon",Y,strong,mixed,220054606,small,37923861,122454040,21403080,11062873,638776,ref,4.856138914,67,50152045,34137721
+Rubus,occidentalis,NA,PB,"Canu, Pilon",Y,strong,selfing,290824828,small,37923861,137724198,28841358,11166255,2347388,qry,4.856138914,67,NA,
+Salix,suchowensis,Illumina_HiSeq,PB,Canu,Y,weak,self-incompatible,309878004,small,35069956,160983447,34056821,2831417,1707705,ref,4.856551967,287,51237400,46275822
+Salix,dunnii,Illumina_NovaSeq\,ONT,Canu,Y,weak,self-incompatible,325352140,small,35069956,172356857,39309651,2850744,2624163,qry,4.856551967,287,NA,
+Salvia,bowleyana,Illumina_HiSeq,PB,"MECAT, Canu, Pilon",Y,strong,mixed,450894611,medium,107568566,122499524,54962188,52507461,32807012,ref,4.257413151,233,164937606,41825538
+Salvia,miltiorrhiza,Illumina_HiSeq,PB,"Canu, Falcon, Pilon",Y,strong,mixed,542195349,medium,107568566,116600715,122559423,52886333,68144537,qry,4.257413151,233,NA,
+Solanum,lycopersicum,"Illumina_HiSeq, Roche454, 10X_Genomics",PB,"Canu, Arrow, Pilon",Y,strong,selfing,772876783,medium,22036530,238158177,189623625,1254725,553680,ref,4.588784434,119,393403366,34980075
+Solanum,tuberosum,Illumina_HiSeq,ONT,"Flye, Pilon",Y,strong,self-incompatible,731287747,medium,22036530,244742247,191194593,1279272,832611,qry,4.588784434,119,NA,
+Vaccinium,myrtillus,Illumina_NovaSeq,ONT,Shasta,Y,weak,mixed,464157312,medium,60555294,181561843,78114642,7702390,6277579,qry,5.00668992,296,NA,
+Vaccinium,macrocarpon,Illumina_HiSeq,PB,"Canu, Pilon",N,weak,selfing,455107697,medium,60555294,197710901,85878142,7808231,1871193,ref,5.00668992,296,121919096,30547403
+Vigna,radiata,"Illumina_HiSeq, Roche454",NA,"ALLPATHS, Newbler",N,weak,selfing,333308464,small,9346234,130812652,100188104,2589119,332687,qry,4.358391297,66,NA,
+Vigna,unguiculata,NA,PB,"Canu, Falcon",Y,weak,selfing,473456283,medium,9346234,136436811,144278365,2583900,419797,ref,4.358391297,66,158440642,38739323
+Vitis,vinifera line:PN40024,Sanger,NA,Arache,N,strong,selfing,426176009,medium,168094104,249804833,28436285,32272154,9614281,ref,4.510644328,143,86545090,35044630
+Vitis,riparia,"Illumina_HiSeq, 10X_Genomics",PB,"Falcon, Pilon",N,strong,self-incompatible,471203508,medium,168094104,232967305,31682397,31526358,27059441,qry,4.510644328,143,NA,
