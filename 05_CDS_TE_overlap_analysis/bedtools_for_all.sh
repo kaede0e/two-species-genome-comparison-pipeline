@@ -111,7 +111,7 @@ done
 ## Use bedtools intersect -c (count) to see if breakpoints overlaps with any genes
 for genus in `cat genome_pair.txt`;
 do
-  cat ${genus}_genome/*genes.bed | cut -f 1-3 | sort -k1,1 -k2,2n > ${genus}_genome/sorted_genes.bed
+  cat ${genus}_genome/${genus}_genes.bed | cut -f 1-3 | sort -k1,1 -k2,2n > ${genus}_genome/sorted_genes.bed
   bedtools merge -i ${genus}_genome/sorted_genes.bed > ${genus}_genome/merged_genes.bed
   bedtools intersect -a ${genus}_genome/inversion_breakpoints.bed -b ${genus}_genome/merged_genes.bed -c > ${genus}_genome/bedtools_count_gene_at_breakpoints.txt
 done
@@ -130,6 +130,12 @@ done
 for genus in `cat genome_pair.txt`;
 do
   bedtools intersect -a ${genus}_genome/random_aligned_points.bed -b ${genus}_genome/merged_genes.bed -c > ${genus}_genome/bedtools_count_gene_at_random_points.txt
+done
+## Use bedtools intersect -c (count) to see how many genes overlap with any inversions 
+for genus in `cat genome_pair.txt`;
+do
+  cat ${genus}_genome/${genus}_*genes.bed | cut -f -3 > ${genus}_genome/raw_genes.bed
+  bedtools intersect -a ${genus}_genome/raw_genes.bed -b ${genus}_genome/inversion_regions.bed -c > ${genus}_genome/bedtools_count_inversion_at_genes.txt
 done
 
 
