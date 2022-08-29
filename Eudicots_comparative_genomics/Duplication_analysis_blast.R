@@ -3,8 +3,6 @@ library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
 #Data Import function
 ## Define directory with your data formatted as directory/genera/
@@ -59,11 +57,11 @@ blast_10kb_window_table <- blast_10kb_window %>%
   filter(region_length >= 2000)
 
 blast_10kb_window_table %>%
-  ggplot()+
+  ggplot()+ #give you an idea of BLAST hits you're getting altogether
   geom_histogram(aes(x=percent_ID))+
   xlab("sequence similarity of 10kb window (%)")+ ylab("count")
   
-duplicates <- blast_10kb_window_table %>% group_by(chr_1, region_start_1, region_end_1, Genus) %>% count() %>% filter(n != 1)
+duplicates <- blast_10kb_window_table %>% group_by(chr_1, region_start_1, region_end_1, Genus) %>% count() %>% filter(n != 1) #retain only the longest alignment for pairs with multiple BLAST hits
 duplicate_hits <- left_join(blast_10kb_window_table, duplicates)
 blast_longest_hits <- duplicate_hits %>% filter(n >= 1) %>% group_by(chr_1, region_start_1, region_end_1, Genus) %>% summarise(length = max(length))
 unique_hits <- blast_10kb_window_table %>% group_by(chr_1, region_start_1, region_end_1, Genus) %>% count() %>% filter(n == 1) %>% select(-n)
