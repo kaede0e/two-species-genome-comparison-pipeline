@@ -4,6 +4,8 @@ library(compiler)
 library(tidyverse)
 library(dplyr)
 
+
+#Data Import function
 ## Define directory with your data formatted as directory/genera/
 genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
             "Citrus", "Corylus", "Corymbia", "Cucumis", 
@@ -14,39 +16,12 @@ genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
             "Salix", "Salvia", "Solanum", 
             "Vaccinium", "Vigna", "Vitis")
 
-### Extract inversion breakpoint regions ### 
-Master_score_table_updated_inv <- Master_score_table_updated %>%
-  filter(type =="inv")%>%
-  select(Genus, chr_1, region_start_1, region_end_1)%>%
-  distinct()
-end_4k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            lower_2k = region_end_1,
-            upper_2k = region_end_1 + 4000)
-            #lower_end = region_end_1, 
-            #upper_end = region_end_1 + 10000)
-start_4k <- Master_score_table_updated_inv%>%
-  transmute(Genus, chr_1,
-            lower_2k = region_start_1 - 4000,
-            upper_2k = region_start_1)
-            #lower_end = region_start_1 -10000, 
-            #upper_end = region_start_1)
-breakpoints_regions_onesided <- rbind(end_4k, start_4k)
-breakpoints_regions_onesided_10k <- rbind(end_10k, start_10k)
-for (genus in genera){
-  breakpoints_regions_onesided_10k %>%
-    filter(Genus == genus) %>%
-    write.csv(., paste0('breakpoints_regions_onesided_10k_', genus, '.csv'))
-}
-
-
-#Data Import function
 datalist_bedtools_bpoverlap = list()
-datalist_bedtools_count = list()
+datalist_bedtools_count = list()#not used for our purposes
 
+# we are looking for the proportion of CDS or TE covering the genome (relevant for bedtools intersect -wo and not -c count)
 #### CDS #####
-
-#Overlap with inv breakpoint 4kbp regions vs. random 4kbp regions on the reference genome
+#Overlap with inv breakpoint 4kbp regions vs. genomic CDS proportion
 for (genus in genera){
   ## for inversion breakpoints data
   bedtools_bpoverlap_breakpoint_regions_bed <- read.table(paste0(directory, "/", genus, "/breakpoints_regions_onesided.bed"), head = FALSE) %>%
@@ -66,75 +41,13 @@ for (genus in genera){
            "nCDS(bp)" =V7) %>% 
     add_column(Genus = genus, type = "inv_breakpoints")
   bedtools_bpoverlap_merged_cds_inv_breakpoints_including_zeros <- full_join(bedtools_bpoverlap_breakpoint_regions_bed, bedtools_bpoverlap_merged_cds_inv_breakpoints)
-  bedtools_count_cds_inv_breakpoints <- read.table(paste0(directory, "/", genus, "/bedtools_count_cds_inv_breakpoints.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "nCDS(seq)" = V4) %>% 
-    add_column(Genus = genus, type = "inv_breakpoints")
-  ## for random 4kbp regions data
-  bedtools_bpoverlap_random_regions_bed <- read.table(paste0(directory, "/", genus, "/bedtools_random_4k_regions.bed"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-    ) %>% 
-    add_column(Genus = genus, type = "random_4k")
-  bedtools_bpoverlap_merged_cds_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_bpoverlap_merged_cds_random_4k_wholechr.txt"), head = FALSE) %>%
-    select(V1, V2, V3, V4, V5, V6, V7) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           chr_1b = V4, 
-           CDS_start = V5, 
-           CDS_end = V6, 
-           "nCDS(bp)" =V7) %>% 
-    add_column(Genus = genus, type = "random_4k")
-  bedtools_bpoverlap_merged_cds_random_4k_including_zeros <- full_join(bedtools_bpoverlap_random_regions_bed, bedtools_bpoverlap_merged_cds_random_4k)
-  bedtools_count_cds_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_count_cds_random_4k_wholechr.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "nCDS(seq)" = V4) %>% 
-    add_column(Genus = genus, type = "random_4k")
-  ## for alignable random 4kbp regions data
-  bedtools_bpoverlap_random_aligned_regions_bed <- read.table(paste0(directory, "/", genus, "/bedtools_random_4k_aligned_regions.bed"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-    ) %>% 
-    add_column(Genus = genus, type = "alignable_random_4k")
-  bedtools_bpoverlap_merged_cds_alignable_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_bpoverlap_merged_cds_random_4k.txt"), head = FALSE) %>%
-    select(V1, V2, V3, V4, V5, V6, V7) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           chr_1b = V4, 
-           CDS_start = V5, 
-           CDS_end = V6, 
-           "nCDS(bp)" =V7) %>% 
-    add_column(Genus = genus, type = "alignable_random_4k")
-  bedtools_bpoverlap_merged_cds_alignable_random_4k_including_zeros <- full_join(bedtools_bpoverlap_random_aligned_regions_bed, bedtools_bpoverlap_merged_cds_alignable_random_4k)
-  bedtools_count_cds_alignable_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_count_cds_random_4k.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "nCDS(seq)" = V4) %>% 
-    add_column(Genus = genus, type = "alignablerandom_4k")
-  bedtools_bpoverlap_merged_both <- rbind(
-    bedtools_bpoverlap_merged_cds_inv_breakpoints_including_zeros,
-    bedtools_bpoverlap_merged_cds_random_4k_including_zeros,
-    bedtools_bpoverlap_merged_cds_alignable_random_4k_including_zeros)
-  datalist_bedtools_bpoverlap[[genus]] <- bedtools_bpoverlap_merged_both # add it to your list
-  bedtools_count_both <- rbind(bedtools_count_cds_inv_breakpoints,bedtools_count_cds_random_4k,bedtools_count_cds_alignable_random_4k)
-  datalist_bedtools_count[[genus]] <- bedtools_count_both # add it to your list
+  datalist_bedtools_bpoverlap[[genus]] <- bedtools_bpoverlap_merged_cds_inv_breakpoints_including_zeros # add it to your list
   
 }
 Master_bedtools_bpoverlap_breakpoints_merged_CDS = do.call(rbind, datalist_bedtools_bpoverlap)
-Master_bedtools_count_breakpoints_CDS = do.call(rbind, datalist_bedtools_count)
 
 ##### TE #####
-# we are looking for the proportion of TE covering the genome (relevant for bedtools intersect -wo)
-#Overlap with inv breakpoints vs. random 4kbp regions on the reference genome
+#Overlap with inv breakpoints vs. genomic TE proportion
 for (genus in genera){
   ## for inversion breakpoints data
   bedtools_bpoverlap_breakpoint_regions_bed <- read.table(paste0(directory, "/", genus, "/breakpoints_regions_onesided.bed"), head = FALSE) %>%
@@ -161,78 +74,23 @@ for (genus in genera){
            region_end_1 = V3, 
            "nTE(seq)" = V4) %>% 
     add_column(Genus = genus, type = "inv_breakpoints")
-  ## for random 4kb data
-  bedtools_bpoverlap_random_regions_bed <- read.table(paste0(directory, "/", genus, "/bedtools_random_4k_regions.bed"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-    ) %>% 
-    add_column(Genus = genus, type = "random_4k")
-  bedtools_bpoverlap_merged_TE_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_bpoverlap_merged_TE_random_4k_wholechr.txt"), head = FALSE) %>%
-    select(V1, V2, V3, V4, V5, V6, V7) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           chr_1b = V4, 
-           TE_start = V5, 
-           TE_end = V6, 
-           "nTE(bp)" =V7) %>% 
-    add_column(Genus =genus, type = "random_4k") %>%
-    mutate(region_length = region_end_1 - region_start_1)
-  bedtools_bpoverlap_merged_TE_random_4k_including_zeros <- full_join(bedtools_bpoverlap_random_regions_bed, bedtools_bpoverlap_merged_TE_random_4k)
-  bedtools_count_TE_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_count_TE_random_4k_wholechr.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "nTE(seq)" = V4) %>% 
-    add_column(Genus = genus, type = "random_4k")
-  ## for alignable random 4kbp regions data
-  bedtools_bpoverlap_random_aligned_regions_bed <- read.table(paste0(directory, "/", genus, "/bedtools_random_4k_aligned_regions.bed"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-    ) %>% 
-    add_column(Genus = genus, type = "alignable_random_4k")
-  bedtools_bpoverlap_merged_TE_alignable_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_bpoverlap_merged_TE_random_4k.txt"), head = FALSE) %>%
-    select(V1, V2, V3, V4, V5, V6, V7) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           chr_1b = V4, 
-           TE_start = V5, 
-           TE_end = V6, 
-           "nTE(bp)" =V7) %>% 
-    add_column(Genus = genus, type = "alignable_random_4k")%>%
-    mutate(region_length = region_end_1 - region_start_1) 
-  bedtools_bpoverlap_merged_TE_alignable_random_4k_including_zeros <- full_join(bedtools_bpoverlap_random_aligned_regions_bed, bedtools_bpoverlap_merged_TE_alignable_random_4k)
-  bedtools_count_TE_alignable_random_4k <- read.table(paste0(directory, "/", genus, "/bedtools_count_TE_random_4k.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "nTE(seq)" = V4) %>% 
-    add_column(Genus = genus, type = "alignablerandom_4k")
-  bedtools_bpoverlap_merged_both <- rbind(
-    bedtools_bpoverlap_merged_TE_inv_breakpoints_including_zeros,
-    bedtools_bpoverlap_merged_TE_random_4k_including_zeros,
-    bedtools_bpoverlap_merged_TE_alignable_random_4k_including_zeros)
-  datalist_bedtools_bpoverlap[[genus]] <- bedtools_bpoverlap_merged_both # add it to your list
-  bedtools_count_both <- rbind(bedtools_count_TE_inv_breakpoints,bedtools_count_TE_random_4k,bedtools_count_TE_alignable_random_4k)
-  datalist_bedtools_count[[genus]] <- bedtools_count_both # add it to your list
+  datalist_bedtools_bpoverlap[[genus]] <- bedtools_bpoverlap_merged_TE_inv_breakpoints_including_zeros # add it to your list
   
 }
 Master_bedtools_bpoverlap_breakpoints_merged_TE = do.call(rbind, datalist_bedtools_bpoverlap)
-Master_bedtools_count_breakpoints_TE = do.call(rbind, datalist_bedtools_count)
 
-#####Plotting##### 
-Master_bedtools_bpoverlap_breakpoints_merged_CDS <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_CDS_final.csv") #when 2kbp of both sides are considered as breakpoint regions
-Master_bedtools_bpoverlap_breakpoints_merged_TE <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_TE_final.csv") 
-Master_bedtools_bpoverlap_breakpoints_merged_CDS <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_CDS_onesided.csv") #when 4kb of either ends are considered as breakpoint regions
+##### Plotting ##### 
+Master_bedtools_bpoverlap_breakpoints_merged_CDS <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_CDS_onesided.csv") 
 Master_bedtools_bpoverlap_breakpoints_merged_TE <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_TE_onesided.csv") 
   
-CDS_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_CDS %>%
+Master_bedtools_bpoverlap_breakpoints_merged_CDS <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_CDS_final.csv") #when 4kb of either ends are considered as breakpoint regions
+Master_bedtools_bpoverlap_breakpoints_merged_TE <- read_csv("Master_bedtools_bpoverlap_breakpoints_merged_TE_final.csv") 
+  
+CDS_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_CDS %>% #if using the genomic CDS%
   distinct() %>% 
   mutate_all(~replace(., is.na(.), 0)) %>%
-  filter(type != "alignable_random_4k") %>%
+  filter(type != "alignable_random_4k") %>% #extra analyses we did but omitted.
+  filter(type != "random_4k")%>% 
   mutate(region_length = region_end_1 - region_start_1)%>%
   group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
   summarise(
@@ -242,18 +100,20 @@ CDS_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_CDS %>%
   summarise(
     proportion_of_CDS_per_region = sum(total_bpoverlap)/sum(region_length)
   )%>%
+  rbind(., genomic_CDS_proportion)%>% 
   ggplot()+
   geom_point(aes(x = type, y = proportion_of_CDS_per_region, colour = type))+
   geom_line(aes(x = type, y = proportion_of_CDS_per_region, group = Genus))+
-  scale_color_manual(values = pal3)
+  theme_classic()+
+  scale_color_manual(values = pal3)+
+  scale_x_discrete(labels = c("Inversion breakpoints", "Whole genome"))+
+  xlab("")+ ylab("Proportion of CDS")
 
-TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
+TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>% #if using the whole genome TE%
   distinct() %>% 
   mutate_all(~replace(., is.na(.), 0)) %>%
-  filter(type != "alignable_random_4k") %>%
-  filter(Genus != "Vaccinium") %>%
-  filter(Genus != "Medicago") %>%
-  filter(Genus != "Quercus") %>%
+  filter(type != "alignable_random_4k") %>% #extra analyses we did but omitted. 
+  filter(type != "random_4k") %>%
   mutate(region_length = region_end_1 - region_start_1)%>%
   group_by(chr_1, region_start_1, region_end_1, region_length, type, Genus)%>%
   summarise(
@@ -262,11 +122,15 @@ TE_proportion2 <- Master_bedtools_bpoverlap_breakpoints_merged_TE %>%
   group_by(Genus, type)%>%
   summarise(
     proportion_of_TE_per_region = sum(total_bpoverlap)/sum(region_length)
-  )%>%
+  )%>% 
+  rbind(., genomic_TE_proportion) %>%
   ggplot()+
   geom_point(aes(x = type, y = proportion_of_TE_per_region, colour = type))+
   geom_line(aes(x = type, y = proportion_of_TE_per_region, group = Genus))+
-  scale_color_manual(values = pal3)
+  theme_classic()+
+  scale_color_manual(values = pal3)+
+  scale_x_discrete(labels = c("Inversion breakpoints", "Whole genome"))+
+  xlab("")+ ylab("Proportion of TE")
 
 joined_proportion <- left_join(CDS_proportion, TE_proportion)
 joined_proportion2 <- left_join(CDS_proportion2, TE_proportion2)
