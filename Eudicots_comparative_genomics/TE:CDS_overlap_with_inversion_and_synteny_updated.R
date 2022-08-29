@@ -3,8 +3,6 @@ library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
 #Data Import function
 ## Define directory with your data formatted as directory/genera/
@@ -16,7 +14,6 @@ genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
             "Quercus", "Rhododendron", "Rosa", "Rubus", 
             "Salix", "Salvia", "Solanum", 
             "Vaccinium", "Vigna", "Vitis")
-directory <- "/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics"
 
 #### CDS #####
 
