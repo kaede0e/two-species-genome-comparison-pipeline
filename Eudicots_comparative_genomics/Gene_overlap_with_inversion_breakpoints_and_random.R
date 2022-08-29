@@ -1,10 +1,8 @@
-#gene count at inversion breakpoints
+#gene count at inversion breakpoints / inversion breakpoints count at any genes
 library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
 #Data Import function
 ## Define directory with your data formatted as directory/genera/
@@ -22,14 +20,14 @@ datalist_bedtools_count = list()
 
 #### Gene #####
 for (genus in genera){
-  ## for inversion breakpoints
+  ## how many inversion breakpoints intersect with any genes
   bedtools_count_gene_inv_breakpoints <- read.table(paste0(directory, "/", genus, "/bedtools_count_gene_at_breakpoints.txt"), head = FALSE) %>%
     rename(chr_1 = V1, 
            region_start_1 = V2, 
            region_end_1 = V3, 
            "gene_hit"= V4) %>% 
     add_column(Genus = genus, type = "inv_breakpoint")
-  ## for random points in the syntenic region of the genome
+  ## how many random points in the syntenic region of the genome intersect with any genes
   bedtools_count_gene_syn_aligned_random <- read.table(paste0(directory, "/", genus, "/bedtools_count_genes_at_random_points_in_syn_region.txt"), head = FALSE) %>%
     rename(chr_1 = V1, 
            region_start_1 = V2, 
@@ -38,11 +36,13 @@ for (genus in genera){
     add_column(Genus = genus, type = "syn_random_point")
   bedtools_count_all <- rbind(bedtools_count_gene_inv_breakpoints, bedtools_count_gene_syn_aligned_random)
   datalist_bedtools_count[[genus]] <- bedtools_count_all # add it to your list
-  
 }
 
+Master_bedtools_count_gene = do.call(rbind, datalist_bedtools_count)
+
+#### Inversion breakpoints #####
 for (genus in genera){
-  ## genes overlapping with inversion breakpoints
+  ## how many genes intersect with inversion breakpoints
   bedtools_count_inv_gene_breakpoints <- read.table(paste0(directory, "/", genus, "/bedtools_count_inversion_breakpoints_at_genes.txt"), head = FALSE) %>%
     rename(chr_1 = V1, 
            region_start_1 = V2, 
@@ -50,54 +50,9 @@ for (genus in genera){
            "inv_hit"= V4) %>% 
     add_column(Genus = genus, type = "gene_inv_overlap")
   datalist_bedtools_count[[genus]] <- bedtools_count_inv_gene_breakpoints # add it to your list
-  
 }
 
 Master_bedtools_count_gene2 = do.call(rbind, datalist_bedtools_count)
-
-#### CDS ##### for testing whether this matches with proportion of CDS in syntenic region.
-for (genus in genera){
-  ## for random points in the syntenic region of the genome
-  bedtools_count_cds_syn_aligned_random <- read.table(paste0(directory, "/", genus, "/bedtools_count_cds_at_random_points_in_syn_region.txt"), head = FALSE) %>%
-    rename(chr_1 = V1, 
-           region_start_1 = V2, 
-           region_end_1 = V3, 
-           "cds_hit"= V4) %>% 
-    add_column(Genus = genus, type = "syn_random_point")
-  #bedtools_count_all <- rbind(bedtools_count_gene_inv_breakpoints, bedtools_count_gene_aligned_random, bedtools_count_gene_syn_aligned_random)
-  datalist_bedtools_count[[genus]] <- bedtools_count_cds_syn_aligned_random # add it to your list
-  
-}
-
-Master_bedtools_count_cds_test = do.call(rbind, datalist_bedtools_count)
-
-## Testing bedtools -count plots ##
-Master_bedtools_count_gene %>%
-  group_by(Genus, type)%>%
-  summarise(
-     n = n(),
-     freq_of_gene = sum(gene_hit)/n
-   ) %>%
-  #filter(type =="inv_breakpoint")%>% 
-  #filter(freq_of_gene < 0.2) %>%
-  #filter(freq_of_gene > 0.5) %>%
-  #filter(Genus == "Arabis"|Genus == "Arachis" |Genus == "Corymbia" | Genus == "Glycine"| Genus == "Malus"| Genus == "Pyrus" | Genus == "Rosa" | Genus == "Salvia")%>% 
-  filter(Genus == "Cucumis"|Genus == "Ipomoea" |Genus == "Medicago" | Genus == "Phaseolus"| Genus == "Salix"| Genus == "Solanum"| Genus == "Vigna")%>% 
-  ggplot()+
-  geom_point(aes(x = type, y = freq_of_gene, colour = type))+
-  geom_line(aes(x = type, y = freq_of_gene, group = Genus))
-  #geom_boxplot(aes(x = type, y = freq_of_gene, colour = type))+
-  #geom_jitter(aes(x = type, y = freq_of_gene, colour = type))+
-  scale_color_manual(values = pal2)
-  
-  Master_bedtools_count_cds_test%>% 
-    group_by(Genus)%>%
-    summarise(
-      n = n(),
-      freq_CDS_in_syntenic_region = sum(cds_hit)/n
-    ) %>%
-    ggplot()+
-    geom_jitter(aes(x=Genus, y=freq_CDS_in_syntenic_region))
 
   
 ##### Plotting #####
