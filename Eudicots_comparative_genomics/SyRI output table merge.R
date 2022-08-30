@@ -2,8 +2,9 @@ library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Vaccinium genome aligning")
+
+#Data import: change the genus name as appropriate when you import tables. 
+setwd("..../sub_folder/[genus_name]")
 genera <- c("Acer", "Actinidia", "Arabis", "Arachis", 
                 "Citrus", "Corylus", "Corymbia", "Cucumis", 
                 "Eukalyptus", "Fragaria", 
@@ -13,13 +14,9 @@ genera <- c("Acer", "Actinidia", "Arabis", "Arachis",
                 "Quercus", 
                 "Rhododendron", "Rosa", "Raphanus", "Rubus", 
                 "Salix", "Salvia", "Solanum", 
-                "Vaccinium", "Vigna", "Vitis")
-parent_folder <- "/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Vaccinium genome aligning"
-sub_folders <- list.dirs(parent_folder, recursive=TRUE)[-1]
-sub_folders <- tail(sub_folders, 32)
+                "Vaccinium", "Vigna", "Vitis") #32 genus pair
 
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics/Vitis")
-#for (genus in sub_folders){
+#for (genus in sub_folder){
   alignment_score <- read.table("table.txt", head=TRUE) %>%
   rename(block_start_1 = X0, 
          block_end_1 =X1, 
@@ -61,7 +58,7 @@ Master_data_table <- rbind(Acer_table, Actinidia_table, Arabis_table, Arachis_ta
                            Vaccinium_table, Vigna_table, Vitis_table)
 write.csv(Master_data_table, "Master_data_table_unfiltered_32_genera.csv")
 
-##Species divergence calculation
+#### Species divergence calculation ####
 Master_score_table_updated <- Master_data_table %>% #Master_score_table_updated is UNfiltered by length or whatsoever.
   mutate(normalized_percent_ID = percent_ID*0.01*length_1) %>% 
   mutate(region_length = region_end_1 - region_start_1)
@@ -103,7 +100,7 @@ combined_fai <- read_table("chr_length_for_32_genera.txt", col_names = FALSE)
 combined_fai_file <- combined_fai %>% rename("chr_1" = X1, "chr_length" = X2, "Genus" = X3)
 plot_chr_length <- left_join(combined_fai_file, inversion_stats2_by_chr)
 
-##Visualize on plot
+#### Visualize on plot ####
 Master_score_table_updated %>% 
   filter(type == "inv") %>%
   group_by(Genus, chr_1, type, region_start_1, region_end_1, region_length) %>%
@@ -241,29 +238,15 @@ number_of_inv_by_length%>% #rate by inversion size categories
   scale_fill_manual(values = pal5)+
   xlab("Inversion length category")+ ylab("#inversion per % sequence divergence")
   
-#####
-geom_vline(aes(xintercept=)) #for adding median or mode on the histogram
-
-Master_data_table_summary %>%
-  filter(ref_or_qry == "ref") %>%
-  #filter(Evidence_of_hybridization == "weak")%>%
-  mutate(TE_proportion = total_TE_length/Genome_length) %>%
-  ggplot(.,aes(x=percent_divergence, y=total_inv_regions_number)) +
-  geom_point(colour = '#00BFC4') + 
-  geom_smooth(method="lm", colour = '#00BFC4') #allow to change colour manually
- 
-Master_score_table_updated_inv %>% #TESTING proportion of genome in inversion by genus by inversion size; still can't solve the issue with how to plot only one of the proportion per genus not all summed up. 
-  mutate(region_length_category = case_when(
-    region_length < 10000 ~ "<10kbp",
-    region_length >= 10000 & region_length <1000000 ~ "10kbp-1Mbp",
-    region_length >= 1000000 ~ ">1Mbp"
-  ))%>%
-  left_join(genome_length_subset) %>% 
-  select(-number_of_blocks_aligned, -Species, -Genome_length_category, -total_length_of_genome_aligned, -syn_region_length, -TL_length, -dup_length)%>%
-  mutate(proportion_of_genome_in_inversions = inv_region_length/Genome_length)%>% 
+#example supplementary plot of box plot with jitter: 
+assembly_method %>%
+  left_join(., Master_data_table_summary)%>%
+  mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
   ggplot()+
-  geom_col(aes(x=reorder(Genus, proportion_of_genome_in_inversions), y=proportion_of_genome_in_inversions, fill = region_length_category, alpha = 0.4))+
-  xlab("Genus")+ ylab("Proportion of genome in inversions")+
-  scale_fill_manual(values = pnw_palette("Bay",5)) +
+  geom_boxplot(aes(x=Sequencing_platform, y=number_of_inversions, fill = TRUE, alpha = 0.4), outlier.shape = NA)+
+  geom_jitter(aes(x=Sequencing_platform, y=number_of_inversions))+
   theme_classic()+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+  scale_fill_manual(values = pal[25])+
+  scale_colour_manual(values = pal[25])+
+  ylab("Number of inversions")
+
