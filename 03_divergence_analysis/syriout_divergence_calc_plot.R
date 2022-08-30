@@ -32,13 +32,13 @@ syn_joined <- as_tibble(synteny_joined)
   
 ##If you have done SyRI analysis on multiple genera, repeat above with different genus names and concatenate all tables in one master table: 
 Master_data_table <- rbind(Genus1_table, Genus2_table ... )
-
-Master_score_table <- Master_data_table %>%
+Master_score_table_updated <- Master_data_table %>% #Master_score_table_updated is UNfiltered by length or whatsoever.
   mutate(normalized_percent_ID = percent_ID*0.01*length_1) %>% 
-  filter(length_1 > 1000) #filter out any regions shorter than 1000 bp to eliminate misleading smaller alignments and focus on the larger alignment regions. 
-  
+  mutate(region_length = region_end_1 - region_start_1)
+
 syn_plot <- Master_score_table %>%
   filter(type == "syn") %>%
+  filter(region_length >1000) %>% #Sequence divergence is calculated from regions longer than 1kbp
   group_by(region_start_1, region_end_1, Genus) %>% 
   summarise(region_percent_ID = sum(normalized_percent_ID, na.rm = TRUE)/sum(length_1, na.rm = TRUE))
 divergence <- syn_plot %>% 
