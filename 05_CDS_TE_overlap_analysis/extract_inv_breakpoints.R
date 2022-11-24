@@ -36,7 +36,7 @@ for (genus in genera){
     write.csv(., paste0('breakpoints_regions_onesided_10k_', genus, '.csv'))
 }
 
-#1kb window: 
+#1kb x10 window: 
   end_1k_1 <- Master_score_table_updated_inv%>%
     transmute(Genus, chr_1,
               start = region_end_1,
