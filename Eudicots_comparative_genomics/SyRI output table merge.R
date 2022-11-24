@@ -237,6 +237,13 @@ number_of_inv_by_length%>% #rate by inversion size categories
   scale_colour_manual(values = pal5) +
   scale_fill_manual(values = pal5)+
   xlab("Inversion length category")+ ylab("#inversion per % sequence divergence")
+
+number_of_inv_by_length %>% #inversion size distribution by genus
+  filter(region_length >1000) %>%
+  ggplot()+
+  geom_histogram(aes(x=region_length))+
+  facet_wrap("Genus", nrow = 5, scales = "free_y")+
+  scale_x_continuous(trans='log10')
   
 #example supplementary plot of box plot with jitter: 
 assembly_method %>%
