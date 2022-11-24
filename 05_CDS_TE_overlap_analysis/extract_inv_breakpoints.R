@@ -35,3 +35,6 @@ for (genus in genera){
     filter(Genus == genus) %>%
     write.csv(., paste0('breakpoints_regions_onesided_10k_', genus, '.csv'))
 }
+
+#1kb window: 
+
