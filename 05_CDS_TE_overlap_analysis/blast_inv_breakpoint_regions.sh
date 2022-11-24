@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Finding segmental duplications or inverted segments in inversion breakpoint regions
+#Finding segmental duplications or inverted segments in breakpoint regions upstream/downstream of inversions
 module load bedtools
 module load samtools
 module load StdEnv/2020 gcc/9.3.0 blast+/2.12.0
