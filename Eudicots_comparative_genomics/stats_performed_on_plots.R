@@ -3,6 +3,14 @@ library(tidyverse)
 ##### Statistical analysis #####
 ##For codes used in plotting the data, refer to the scripts deposited in /Eudicots_comparative_genomics under separate analysis title. 
 
+#0) Test for variance in sequence divergence distribution inside syntenic region vs. inverted region (the 'two groups'): 
+syn_inv_plot <- read_csv("syn_inv_plot_updated.csv")
+syn_inv_plot %>% 
+  filter(Genus =="Arabis")%>% #pick one species pair at a time
+  var.test(region_percent_ID ~ type, data = ., alternative = "two.sided") #F-statistics to test variance in data between two groups
+  t.test(region_percent_ID ~ type, data = ., paired = FALSE) #unpaired t-test to test if the mean sequence divergence matches between two groups
+
+
 #1) Linear regression analysis to determine statistical significance between number of inversions and: 
 #1.1) sequence divergence
 Master_data_table_summary <- read_csv("Master_data_table_summary_all_genomes_updated.csv")
@@ -69,22 +77,38 @@ number_of_inv_by_length%>%
   group_by(region_length_category)%>%
   summarise(x = quantile(rate_of_inversion, c(0.25, 0.5, 0.75)), q = c(0.25, 0.5, 0.75))
 
-#2) One-way ANOVA test to determine any significant relationship between the number of inversion/proportion of genome inverted and the following five parameters: 
+#2) One-way ANOVA test to determine any significant relationship between the number of inversion/proportion of genome inverted and the following seven parameters: 
 #2.1) hybridization
-Master_data_table_summary %>%
-  filter(ref_or_qry == "ref") %>%
-  left_join(., biological_info)%>%
-  aov(number_of_inversions ~ Evidence_of_hybridization, 
-      data = .) %>%
-  summary()
 Master_data_table_summary %>%
   filter(ref_or_qry == "ref") %>%
   mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
   left_join(., biological_info)%>%
-  aov(proportion_of_inverted_genome ~ Evidence_of_hybridization, 
-      data = .) %>%
+  filter(Range_overlap == "Y")%>%
+  filter(Domestication_status != "Y-Y")%>% 
+  aov(number_of_inversions ~ Evidence_of_hybridization,
+      data = .)%>% 
+  summary()
+
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
+  left_join(., biological_info)%>%
+  filter(Range_overlap == "Y")%>%
+  filter(Domestication_status != "Y-Y")%>% 
+  aov(proportion_of_inverted_genome ~ Evidence_of_hybridization,
+      data = .)%>% 
   summary() #Assume this proportion of inverted genome was repeated to every single analysis below. 
-#2.2) reproductive strategy
+
+#2.2) generation time - annual vs. perennial
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  left_join(., biological_info)%>%
+  mutate(proportion_of_genome_in_inversions = inv_region_length/Genome_length)%>% 
+  aov(number_of_inversions ~ perennial_annual,
+      data = .)%>% 
+  summary()
+
+#2.3) reproductive strategy
 Master_data_table_summary %>%
   filter(ref_or_qry == "ref") %>%
   mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
@@ -92,7 +116,17 @@ Master_data_table_summary %>%
   aov(number_of_inversions ~ Reproductive_strategy, 
       data = .) %>%
   summary()
-#2.3) assembly method - assembler
+
+#2.4) domestication status - domesticated or wild
+Master_data_table_summary %>%
+  filter(ref_or_qry == "ref") %>%
+  mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
+  left_join(., biological_info)%>%
+  aov(number_of_inversions ~ Domestication_status, 
+      data = .) %>%
+  summary()
+  
+#2.5) assembly method - assembler
 assembler <- read_csv("assembler.csv")
 assembler %>% separate(Assembler, 
                        into = c("Assembler1", "Assembler2", "Assembler3"), 
@@ -106,14 +140,14 @@ assembler %>%
   aov(number_of_inversions ~ Assembler_combined,
       data = .)%>% #manually Assembler_category from two species was combined to Assembler_combined
   summary()
-#2.4) assembly method - sequencing platform
+#2.6) assembly method - sequencing platform
 assembly_method %>%
   left_join(., Master_data_table_summary)%>%
   mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
   aov(number_of_inversions ~ Sequencing_platform,
       data = .)%>% 
   summary()
-#2.5) assembly method - physical mapping
+#2.7) assembly method - physical mapping
 assembly_method %>%
   left_join(., Master_data_table_summary)%>%
   mutate(proportion_of_inverted_genome = inv_region_length/Genome_length) %>%
