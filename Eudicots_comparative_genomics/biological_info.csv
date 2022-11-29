@@ -1,0 +1,65 @@
+Genus,Species,Range_overlap,Evidence_of_hybridization,Self-compatibility,Reproductive_strategy,Domesticated,Domestication_status,Generation_time,perennial_annual,Linkage_map_length
+Acer,yangbiense,N,weak,mixed,mixed-mixed,N,N-N,perennial,perennial_perennial,NA
+Acer,truncatum,N,weak,mixed,mixed-mixed,N,N-N,perennial,perennial_perennial,NA
+Actinidia,chinensis,N,strong,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,3445
+Actinidia,eriantha,N,strong,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,3445
+Arabis,alpina,Y,strong,mixed,mixed-mixed,N,N-N,perennial,perennial_annual,NA
+Arabis,montbretiana,Y,strong,mixed,mixed-mixed,N,N-N,annual,perennial_annual,NA
+Arachis,duranensis,Y,strong,selfing,selfing-selfing,N,N-N,annual,annual_annual,1081.3
+Arachis,ipaensis,Y,strong,selfing,selfing-selfing,N,N-N,annual,annual_annual,1081.3
+Citrus,sinensis,N,strong,selfing,selfing-selfing,Y,Y-Y,perennial,perennial_perennial,895.5
+Citrus,trifoliata,N,strong,selfing,selfing-selfing,Y,Y-Y,perennial,perennial_perennial,895.5
+Corylus,heterophylla,N,strong,mixed,mixed-incompatible,Y,Y-Y,perennial,perennial_perennial,762
+Corylus,avellana,N,strong,self-incompatible,mixed-incompatible,Y,Y-Y,perennial,perennial_perennial,762
+Corymbia,citriodora,Y,strong,mixed,mixed-mixed,Y,Y-N,perennial,perennial_perennial,1179.9
+Corymbia,maculata,Y,strong,mixed,mixed-mixed,N,Y-N,perennial,perennial_perennial,1179.9
+Cucumis,melo,N,weak,self-incompatible,mixed-incompatible,Y,Y-Y,annual,annual_annual,1150
+Cucumis,metuliferus,N,weak,mixed,mixed-incompatible,Y,Y-Y,annual,annual_annual,1150
+Eukalyptus,grandis,Y,weak,mixed,mixed-mixed,Y,Y-Y,perennial,perennial_perennial,1241
+Eukalyptus,globulus,Y,weak,mixed,mixed-mixed,Y,Y-Y,perennial,perennial_perennial,1241
+Fragaria,vesca,N,strong,selfing,selfing-selfing,N,N-N,perennial,perennial_perennial,433.95
+Fragaria,iinumae,N,strong,selfing,selfing-selfing,N,N-N,perennial,perennial_perennial,433.95
+Glycine,max,Y,strong,selfing,mixed-selfing,Y,Y-N,annual,annual_annual,2534.3
+Glycine,soja,Y,strong,mixed,mixed-selfing,N,Y-N,annual,annual_annual,2534.3
+Gossypium,anomalum,Y,strong,selfing,selfing-selfing,Y,Y-N,perennial,perennial_annual,NA
+Gossypium,herbaceum,Y,strong,selfing,selfing-selfing,N,Y-N,perennial,perennial_annual,NA
+Ipomoea,nil,Y,strong,selfing,selfing-incompatible,Y,Y-N,annual,perennial_perennial,3156.55
+Ipomoea,trifida,Y,strong,self-incompatible,selfing-incompatible,N,Y-N,perennial,perennial_perennial,3156.55
+Juglans,mandshurica,N,strong,self-incompatible,mixed-incompatible,Y,Y-N,perennial,perennial_perennial,2457.82
+Juglans,regia,N,strong,mixed,mixed-incompatible,N,Y-N,perennial,perennial_perennial,2457.82
+Luffa,acutangula,Y,strong,mixed,mixed-mixed,Y,Y-Y,annual,annual_annual,1436.12
+Luffa,aegyptiaca (=cylindrica),Y,strong,mixed,mixed-mixed,Y,Y-Y,annual,annual_annual,1436.12
+Malus,sieversii,N,strong,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,1299.67
+Malus,sylvestris,N,strong,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,1299.67
+Medicago,truncatula,N,weak,mixed,mixed-mixed,N,N-N,annual,perennial_annual,1215
+Medicago,ruthenica,N,weak,mixed,mixed-mixed,N,N-N,perennial,perennial_annual,1215
+Phaseolus,vulgaris,Y,strong,mixed,mixed-selfing,Y,Y-Y,perennial,perennial_perennial,1042.2
+Phaseolus,lunatus,Y,strong,selfing,mixed-selfing,Y,Y-Y,perennial,perennial_perennial,1042.2
+Populus,trichocarpa,N,weak,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,2504.5
+Populus,tomentosa,N,weak,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,2504.5
+Prunus,dulcis Texas,N,weak,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,557.045
+Prunus,armeniaca Stella,N,weak,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,557.045
+Pyrus,pyrifolia,Y,strong,self-incompatible,incompatible-incompatible,N,Y-N,perennial,perennial_perennial,1108
+Pyrus,betulifolia,Y,strong,self-incompatible,incompatible-incompatible,Y,Y-N,perennial,perennial_perennial,1108
+Quercus,lobata,N,weak,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,742
+Quercus,robur,N,weak,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,742
+Raphanus,raphanistrum,Y,strong,self-incompatible,incompatible-incompatible,Y,Y-N,annual,annual_annual,1538
+Raphanus,sativus,Y,strong,self-incompatible,incompatible-incompatible,N,Y-N,annual,annual_annual,1538
+Rhododendron,williamsianum,Y,weak,self-incompatible,mixed-incompatible,Y,Y-Y,perennial,perennial_perennial,NA
+Rhododendron,ovatum,Y,weak,mixed,mix,Y,Y-Y,perennial,perennial_perennial,NA
+Rosa,rugosa,Y,strong,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,469.8
+Rosa,chinensis,Y,strong,self-incompatible,incompatible-incompatible,Y,Y-Y,perennial,perennial_perennial,469.8
+Rubus,chingii Hu,N,strong,mixed,mixed-selfing,N,Y-N,perennial,perennial_perennial,309
+Rubus,occidentalis,N,strong,selfing,mixed-selfing,Y,Y-N,perennial,perennial_perennial,309
+Salix,suchowensis,Y,weak,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,NA
+Salix,dunnii,Y,weak,self-incompatible,incompatible-incompatible,N,N-N,perennial,perennial_perennial,NA
+Salvia,bowleyana,Y,strong,mixed,mixed-mixed,N,Y-N,perennial,perennial_perennial,1516.43
+Salvia,miltiorrhiza,Y,strong,mixed,mixed-mixed,Y,Y-N,perennial,perennial_perennial,1516.43
+Solanum,lycopersicum,N,strong,selfing,selfing-incompatible,Y,Y-Y,annual,annual_annual,1090.15
+Solanum,tuberosum,N,strong,self-incompatible,selfing-incompatible,Y,Y-Y,annual,annual_annual,1090.15
+Vaccinium,myrtillus,Y,weak,mixed,mixed-selfing,Y,Y-N,perennial,perennial_perennial,1112
+Vaccinium,macrocarpon,Y,weak,selfing,mixed-selfing,N,Y-N,perennial,perennial_perennial,1112
+Vigna,radiata,N,weak,selfing,selfing-selfing,Y,Y-Y,annual,annual_annual,792.65
+Vigna,unguiculata,N,weak,selfing,selfing-selfing,Y,Y-Y,annual,annual_annual,792.65
+Vitis,vinifera line:PN40024,N,strong,selfing,selfing-incompatible,Y,Y-N,perennial,perennial_perennial,1929.13
+Vitis,riparia,N,strong,self-incompatible,selfing-incompatible,N,Y-N,perennial,perennial_perennial,1929.13
