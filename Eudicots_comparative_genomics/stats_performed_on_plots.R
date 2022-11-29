@@ -31,6 +31,20 @@ Master_data_table_summary %>%
   aov(Genome_length ~ percent_genome_divergence,
       data = .)%>% 
   summary()
+#1.2+) recombination rate = linkage map size (cM) / haploid genome size (Mbp)
+Master_data_table_summary %>% 
+  filter(ref_or_qry == "ref") %>%
+  left_join(., biological_info)%>% 
+  select(Genus, Species, ref_or_qry, Genome_length, inv_region_length, percent_genome_divergence, number_of_inversions, Linkage_map_length) %>% 
+  mutate(haploid_length = Genome_length/2/1000000) %>% #because all species are diploid in this study; length in Mbp
+  mutate(recomb_rate = Linkage_map_length/haploid_length) %>% 
+  mutate(proportion_of_genome_in_inversions = inv_region_length/Genome_length)%>% 
+    aov(number_of_inversions ~ Linkage_map_length,
+        data = .)%>% 
+    aov(number_of_inversions ~ recomb_rate,
+        data = .)%>% 
+    summary()
+
 #1.3) chromosome length 
 inv_plot2 <- Master_score_table_updated %>%
   filter(type == "inv") %>%
