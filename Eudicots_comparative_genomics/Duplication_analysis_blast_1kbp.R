@@ -3,8 +3,6 @@ library(ggplot2)
 library(compiler)
 library(tidyverse)
 library(dplyr)
-getwd()
-setwd("/Volumes/Backup Plus/Comparative genomics - inversion genomics/Scripts/Shell scripts/Comparative genomics")
 
 #Data Import function
 ## Define directory with your data formatted as directory/genera/
