@@ -1,5 +1,6 @@
 # Comparative genomics: Two closely related species genome alignment, structural variant detection & CDS/TE overlap analysis pipeline 
-Two-species genome comparison pipeline (combines minimap2/SyRI, EDTA, bedtools) to identify structural variants (inv/syn), annotate and analyze overlaps with coding sequence and TE, and plot results in R. 
+Two-species genome comparison pipeline (combines minimap2/SyRI, EDTA, bedtools) to identify structural variants (inv/syn), annotate and analyze overlaps with coding sequence and TE, and plot results in R. \
+Used in [Hirabayashi & Owens (2023)](https://doi.org/10.1093/evolut/qpad027)
 
 ### Genome alignment and variant detection
 -	Genome alignment is useful because it tells you how the two species are related at genomic level. 
